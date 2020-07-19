@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/webtoon"
+        android:icon="@drawable/webtoon_bottom_tab"
+        android:title="@string/webtoon_tab" />
+    <item
+        android:id="@+id/recommendedCompletion"
+        android:icon="@drawable/recommended_completion_bottom_tab"
+        android:title="@string/recommendedCompletion" />
+    <item
+        android:id="@+id/bestChallenge"
+        android:icon="@drawable/best_challenge_bottom_tab"
+        android:title="@string/bestChallenge" />
+    <item
+        android:id="@+id/my"
+        android:icon="@drawable/my_bottom_tab"
+        android:title="@string/my" />
+    <item
+        android:id="@+id/more"
+        android:icon="@drawable/more_bottom_tab"
+        android:title="@string/more" />
+</menu>
