@@ -11,9 +11,7 @@
  
 환경설정
 ==============
-
-## build.gradle
-
+### build.gradle
 ```
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -51,7 +49,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01'
 }
 ```
-## build.gradle(Project)
+### build.gradle(Project)
 ```
 allprojects {
         ...
@@ -60,7 +58,7 @@ allprojects {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 }
 ```
-## manifest
+### manifest
 ```
   //인터넷 접근
   <uses-permission android:name="android.permission.INTERNET"/> 
