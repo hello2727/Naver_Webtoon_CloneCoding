@@ -1,10 +1,19 @@
-# 프로젝트
+# 개인 프로젝트
 >네이버 웹툰 클론코딩
-## 1.결과물
 
-  
-## 2.환경설정
-### 2-1.build.gradle
+결과물
+==============
+
+<div>
+  <img width="300", src="https://user-images.githubusercontent.com/43267195/87907401-864c9c80-ca9f-11ea-8145-bd987212c473.gif">
+</div>
+
+ 
+환경설정
+==============
+
+build.gradle
+--------------------------
 ```
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -42,7 +51,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01'
 }
 ```
-### 2-2.build.gradle(Project)
+build.gradle(Project)
+--------------------------
 ```
 allprojects {
         ...
@@ -51,7 +61,8 @@ allprojects {
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 }
 ```
-### 2-3.manifest
+manifest
+--------------------------
 ```
   //인터넷 접근
   <uses-permission android:name="android.permission.INTERNET"/> 
