@@ -48,6 +48,13 @@ dependencies {
 
     //LifecycleScope 사용
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01'
+    
+    //jsoup (웹에서 정보 가져오기)
+    implementation 'org.jsoup:jsoup:1.13.1'
+
+    //glide (추천웹툰 이미지 이미지뷰에 로더)
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 }
 ```
 ### build.gradle(Project)
