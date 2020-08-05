@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.android.webtoon.R
 import com.example.android.webtoon.webtoon.Interface.Interaction
 import com.example.android.webtoon.webtoon.data.RecommendedItem
@@ -47,7 +48,11 @@ class ViewPagerAdapter(private val interaction: Interaction) : RecyclerView.Adap
             itemView.setOnClickListener {
                 interaction.onRecommendedItemClicked(recommendedItem)
             }
-            itemView.iv_recommended_item.setImageResource(recommendedItem.image)
+            /*
+            추천웹툰 이미지 로딩
+             */
+//            itemView.iv_recommended_item.setImageResource(recommendedItem.image)
+            Glide.with(itemView).load(recommendedItem.image).into(itemView.iv_recommended_item)
         }
     }
 }

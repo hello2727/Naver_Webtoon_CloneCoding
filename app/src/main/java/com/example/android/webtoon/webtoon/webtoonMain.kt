@@ -22,6 +22,9 @@ import com.example.android.webtoon.webtoon.data.RecommendedItem
 import kotlinx.android.synthetic.main.fragment_webtoon_main.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
+import java.lang.Exception
 
 private const val NUM_PAGES = 5
 
@@ -32,25 +35,30 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
     private lateinit var viewModel: webtoonMainViewModel
     private var isRunning = true
 
+    private var webtoonUrl = "https://comic.naver.com/index.nhn";
+    private lateinit var elements: Elements
+    private var imgPath = arrayOfNulls<String>(10)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
         var rootView = inflater.inflate(R.layout.fragment_webtoon_main, container, false)
 
+        setWebtoonItem()
         viewModel = ViewModelProvider(this).get(webtoonMainViewModel::class.java)
         viewModel.setRecommendedItems(
             listOf(
-                RecommendedItem(R.drawable.sample1),
-                RecommendedItem(R.drawable.sample2),
-                RecommendedItem(R.drawable.sample3),
-                RecommendedItem(R.drawable.sample4),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample6),
-                RecommendedItem(R.drawable.sample7),
-                RecommendedItem(R.drawable.sample8),
-                RecommendedItem(R.drawable.sample9),
-                RecommendedItem(R.drawable.sample10)
+                RecommendedItem(imgPath[0]),
+                RecommendedItem(imgPath[1]),
+                RecommendedItem(imgPath[2]),
+                RecommendedItem(imgPath[3]),
+                RecommendedItem(imgPath[4]),
+                RecommendedItem(imgPath[5]),
+                RecommendedItem(imgPath[6]),
+                RecommendedItem(imgPath[7]),
+                RecommendedItem(imgPath[8]),
+                RecommendedItem(imgPath[9])
             )
         )
 
@@ -61,6 +69,26 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
         autoScrollViewPager()
 
         return rootView
+    }
+
+    private fun setWebtoonItem() {
+        lifecycleScope.launch {
+            var idx: Int = 0
+            try{
+                var doc = Jsoup.connect(webtoonUrl).get()
+                elements = doc.select("div.lst_area ul li a span.bigimg")
+                for(e in elements) {
+                    if(idx > 9) {
+                        break
+                    }
+
+                    imgPath[idx] = e.text()
+                    idx++
+                }
+            } catch (e : Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun initViewPager2() {

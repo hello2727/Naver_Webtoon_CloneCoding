@@ -54,10 +54,9 @@ dependencies {
     def lifecycle_version = "2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
-    //Coroutine 사용
+    //Coroutine (비동기)
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.4'
-
-    //LifecycleScope 사용
+    //LifecycleScope (비동기)
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-alpha01'
 
     //jsoup (웹에서 정보 가져오기)
