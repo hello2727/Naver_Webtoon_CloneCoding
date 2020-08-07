@@ -2,6 +2,7 @@ package com.example.android.webtoon.webtoon
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity.apply
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -23,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_webtoon_main.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.lang.Exception
 
@@ -45,20 +47,30 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
         savedInstanceState: Bundle?): View? {
         var rootView = inflater.inflate(R.layout.fragment_webtoon_main, container, false)
 
-        setWebtoonItem()
+//        setWebtoonItem()
         viewModel = ViewModelProvider(this).get(webtoonMainViewModel::class.java)
         viewModel.setRecommendedItems(
             listOf(
-                RecommendedItem(imgPath[0]),
-                RecommendedItem(imgPath[1]),
-                RecommendedItem(imgPath[2]),
-                RecommendedItem(imgPath[3]),
-                RecommendedItem(imgPath[4]),
-                RecommendedItem(imgPath[5]),
-                RecommendedItem(imgPath[6]),
-                RecommendedItem(imgPath[7]),
-                RecommendedItem(imgPath[8]),
-                RecommendedItem(imgPath[9])
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg")
+
+//                RecommendedItem(imgPath[1]),
+//                RecommendedItem(imgPath[2]),
+//                RecommendedItem(imgPath[3]),
+//                RecommendedItem(imgPath[4]),
+//                RecommendedItem(imgPath[5]),
+//                RecommendedItem(imgPath[6]),
+//                RecommendedItem(imgPath[7]),
+//                RecommendedItem(imgPath[8]),
+//                RecommendedItem(imgPath[9])
             )
         )
 
@@ -75,16 +87,29 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
         lifecycleScope.launch {
             var idx: Int = 0
             try{
-                var doc = Jsoup.connect(webtoonUrl).get()
-                elements = doc.select("div.lst_area ul li a span.bigimg")
-                for(e in elements) {
+                var rawData = Jsoup.connect(webtoonUrl).get();
+                elements = rawData.select("html body div#wrap.end_page div.mainTopArea div#mainNavi.main_spot div.webtoon_area div.webtoon_lst div.lst_area ul#comicList li a.item span.bigimg");
+                for(e in elements){
                     if(idx > 9) {
                         break
-                    }
+                   }
+
+                    Log.d("확인", e.text())
 
                     imgPath[idx] = e.text()
                     idx++
                 }
+
+//                var doc = Jsoup.connect(webtoonUrl).get()
+//                elements = doc.select("div.lst_area ul li a span.bigimg")
+//                for(e in elements) {
+//                    if(idx > 9) {
+//                        break
+//                    }
+//
+//                    imgPath[idx] = e.text()
+//                    idx++
+//                }
             } catch (e : Exception) {
                 e.printStackTrace()
             }

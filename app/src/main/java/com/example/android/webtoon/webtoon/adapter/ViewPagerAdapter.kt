@@ -1,11 +1,14 @@
 package com.example.android.webtoon.webtoon.adapter
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.Glide.with
 import com.example.android.webtoon.R
+import com.example.android.webtoon.webtoon.GlideApp
 import com.example.android.webtoon.webtoon.Interface.Interaction
 import com.example.android.webtoon.webtoon.data.RecommendedItem
 import kotlinx.android.synthetic.main.item_layout_recommended.view.*
@@ -52,7 +55,7 @@ class ViewPagerAdapter(private val interaction: Interaction) : RecyclerView.Adap
             추천웹툰 이미지 로딩
              */
 //            itemView.iv_recommended_item.setImageResource(recommendedItem.image)
-            Glide.with(itemView).load(recommendedItem.image).into(itemView.iv_recommended_item)
+            GlideApp.with(itemView.context).load(recommendedItem.image).placeholder(R.drawable.sample4).error(R.drawable.sample1).into(itemView.iv_recommended_item)
         }
     }
 }
