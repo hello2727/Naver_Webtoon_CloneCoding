@@ -22,6 +22,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     // 뷰페이저 -> 자동넘김 ui구성
+    implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
     testImplementation 'junit:junit:4.12'
