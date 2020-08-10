@@ -7,9 +7,7 @@
 
 <div>
   <img width="300", src="https://user-images.githubusercontent.com/43267195/87907401-864c9c80-ca9f-11ea-8145-bd987212c473.gif">
-</div>
-<div>
-  <img width="300", src="https://user-images.githubusercontent.com/43267195/89755890-ed4bf700-db1b-11ea-8faf-385323ac4bfe.jpg">
+  <img width="300", src="https://user-images.githubusercontent.com/43267195/89756030-4e73ca80-db1c-11ea-81db-7cab4e413ef9.jpg">
 </div>
 
  
