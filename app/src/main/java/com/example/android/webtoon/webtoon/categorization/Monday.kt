@@ -1,5 +1,6 @@
 package com.example.android.webtoon.webtoon.categorization
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
 import com.example.android.webtoon.webtoon.adapter.CategoryAdapter
 import com.example.android.webtoon.webtoon.data.ListItem
+import com.example.android.webtoon.webtoon.deepWebtoonActivity
 
 class Monday : Fragment() {
     private lateinit var rv_listOfWebtoon : RecyclerView
@@ -30,7 +32,14 @@ class Monday : Fragment() {
         savedInstanceState: Bundle?): View? {
         var rootView = inflater.inflate(R.layout.fragment_monday, container, false)
 
-        val rvAdapter = CategoryAdapter(context, webtoonList)
+        val rvAdapter = CategoryAdapter(context, webtoonList) {ListItem ->
+            /* 아이템 클릭하면 웹툰 회차 나옴 */
+            activity?.let {
+                val intent = Intent(context, deepWebtoonActivity::class.java)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+        }
         rvManager = GridLayoutManager(context, 3)
 
         rv_listOfWebtoon = rootView.findViewById<RecyclerView>(R.id.rv_listOfWebtoon).apply {

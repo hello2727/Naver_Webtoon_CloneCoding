@@ -51,7 +51,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tv_author"
+        android:id="@+id/tv_date"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
