@@ -1,12 +1,16 @@
 package com.example.android.webtoon.webtoon
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +34,7 @@ import java.lang.Exception
 private const val NUM_PAGES = 5
 
 class webtoonMain : Fragment(), View.OnClickListener, Interaction {
+    private lateinit var callback: OnBackPressedCallback
 
     private lateinit var vp_recommendedWebtoon: ViewPager2
     private lateinit var viewPagerAdapter: ViewPagerAdapter
@@ -190,9 +195,24 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
 
     /*항목별 웹툰 리스트*/
     private fun initViewPagerOfList() {
-        TabLayoutMediator(tab_week,vp_webtoonOfWeek){tab,position->
+        TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
             tab.text = tab_weekTextArray[position]
         }.attach()
+    }
+
+    /* 뒤로가기 버튼 이벤트 처리 */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+    override fun onDetach() {
+        super.onDetach()
+        callback.remove()
     }
 }
 

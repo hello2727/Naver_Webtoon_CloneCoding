@@ -32,6 +32,7 @@ class deepWebtoonActivity : AppCompatActivity() {
         val rvAdapter = deepWebtoonAdapter(this, deepwebtoonList) { ListItem ->
             val intent = Intent(this, EpisodeActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         rv_listOfEpisode = findViewById<RecyclerView>(R.id.rv_listOfEpisode).apply {
             // use this setting to improve performance if you know that changes
@@ -48,6 +49,7 @@ class deepWebtoonActivity : AppCompatActivity() {
         }
     }
 
+    /* 뒤로가기 버튼 이벤트 */
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
