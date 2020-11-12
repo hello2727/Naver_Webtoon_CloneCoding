@@ -28,7 +28,7 @@
   <img width="200", src="https://user-images.githubusercontent.com/43267195/98905148-456d0d80-24fe-11eb-9f0e-eff97c104026.gif">
 </div>
 
-미완성
+# 
  
 환경설정
 -----------------
