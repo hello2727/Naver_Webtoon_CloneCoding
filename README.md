@@ -6,8 +6,8 @@
 -----------------
 
 <div>
-  <img width="300", height="500", src="https://user-images.githubusercontent.com/43267195/87907401-864c9c80-ca9f-11ea-8145-bd987212c473.gif">
-  <img width="300", src="https://user-images.githubusercontent.com/43267195/89756030-4e73ca80-db1c-11ea-81db-7cab4e413ef9.jpg">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/87907401-864c9c80-ca9f-11ea-8145-bd987212c473.gif">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/89756030-4e73ca80-db1c-11ea-81db-7cab4e413ef9.jpg">
 </div>
 
  
