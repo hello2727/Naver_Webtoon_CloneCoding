@@ -7,7 +7,7 @@
 - 하단 '웹툰' 탭 화면
 <div>
   <img width="200", src="https://user-images.githubusercontent.com/43267195/87907401-864c9c80-ca9f-11ea-8145-bd987212c473.gif">
-  <img width="200", src="https://user-images.githubusercontent.com/43267195/98893510-e1d6e600-24e5-11eb-82a1-2e771bf2309f.jpg>
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/98893510-e1d6e600-24e5-11eb-82a1-2e771bf2309f.jpg">
   <img width="200", src="https://user-images.githubusercontent.com/43267195/98892963-d0d9a500-24e4-11eb-8769-25b10e869ffc.jpg">
   <img width="200", src="https://user-images.githubusercontent.com/43267195/98893008-e8b12900-24e4-11eb-9565-23c31f7becf8.jpg">
 </div>
