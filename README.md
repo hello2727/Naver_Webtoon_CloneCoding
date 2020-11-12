@@ -24,8 +24,8 @@
 
 - 선택한 웹툰 회차의 컨텐츠 내용 보기
 <div>
-  <img width="200", src="https://user-images.githubusercontent.com/43267195/98894323-e8fef380-24e7-11eb-914d-e8c68aaed5ad.gif">
-  <img width="200", src="https://user-images.githubusercontent.com/43267195/98893008-e8b12900-24e4-11eb-9565-23c31f7becf8.jpg">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/98905111-35edc480-24fe-11eb-96e7-76a4c3943532.gif">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/98905148-456d0d80-24fe-11eb-9f0e-eff97c104026.gif">
 </div>
 
  
