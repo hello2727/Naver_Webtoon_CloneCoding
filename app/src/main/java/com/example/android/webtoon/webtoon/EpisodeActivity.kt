@@ -1,15 +1,9 @@
 package com.example.android.webtoon.webtoon
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.Toast
-import androidx.core.os.postDelayed
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
