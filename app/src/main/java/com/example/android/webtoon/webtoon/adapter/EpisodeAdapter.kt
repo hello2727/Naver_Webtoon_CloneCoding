@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
-import com.example.android.webtoon.webtoon.data.EpisodeList
 import com.example.android.webtoon.webtoon.data.contentUnit
 
 class EpisodeAdapter(val context: Context?, val episodeUnit: ArrayList<contentUnit>, val itemClick: (contentUnit) -> Unit) : RecyclerView.Adapter<EpisodeAdapter.Holder>() {
