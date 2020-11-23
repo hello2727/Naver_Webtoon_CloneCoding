@@ -1,14 +1,19 @@
 package com.example.android.webtoon.webtoon
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.PointF
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.View
 import android.view.animation.ScaleAnimation
+import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +30,23 @@ class EpisodeActivity : AppCompatActivity() {
     var mScale = 1f
     lateinit var mScaleDetector : ScaleGestureDetector
     lateinit var gestureDetector: GestureDetector
+
+    lateinit var mBitmap : Bitmap
+    var mImageWidth = 0
+    var mImageHeight = 0
+    val mMinZoom = 1.0f
+    val mMaxZoom = 2.0f
+    lateinit var mScaleGestureDetector : ScaleGestureDetector
+    val NONE = 0
+    val PAN = 1
+    val ZOOM = 2
+    var mEventState = 0
+    var mStartX = 0f
+    var mStartY = 0f
+    var mTranslateX = 0f
+    var mTranslateY = 0f
+    var mPreviousTranslateX = 0f
+    var mPreviousTranslateY = 0f
 
     private lateinit var rv_listOfcontent : RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
@@ -64,31 +86,62 @@ class EpisodeActivity : AppCompatActivity() {
             adapter = rvAdapter
         }
 
-        /* 화면 줌인 및 줌아웃 */
+        /* 이미지 뷰어 */
+        scrollView = findViewById(R.id.sv_epi)
         zoomInOut()
     }
 
-    /* 화면 줌인 및 줌아웃 */
+    /* 1. , 2. 화면 줌인 및 줌아웃 */
     fun zoomInOut() {
-        gestureDetector = GestureDetector(this, GestureListener())
+        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener(){
+//            var touchX = 0f
+//            var touchY = 0f
+//            var dx = 0f
+//            var dy = 0f
+//
+//            override fun onDown(e: MotionEvent): Boolean {
+//                when(e.action){
+//                    MotionEvent.ACTION_DOWN -> {
+//                        touchX = e.x
+//                        touchY = e.y
+//                    }
+//                    MotionEvent.ACTION_MOVE -> {
+//                        dx = e.x - touchX
+//                        dy = e.y - touchY
+//
+//                        scrollView.x += dx
+//                        scrollView.y += dy
+//
+//                        touchX = e.x
+//                        touchY = e.y
+//                    }
+//                }
+//                return true
+//            }
+        })
         mScaleDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
+//                mScale *= detector.scaleFactor
+//
+//                if(mScale < 1f){
+//                    mScale = 1f
+//                }
+//                if(mScale > 2f){
+//                    mScale = 2f
+//                }
+//
+//                scrollView.scaleX = mScale
+//                scrollView.scaleY = mScale
+//                return true
                 mScale *= detector.scaleFactor
-
-                if(mScale < 1f){
-                    mScale = 1f
-                }
-                if(mScale > 2f){
-                    mScale = 2f
-                }
-
-                scrollView = findViewById(R.id.sv_epi)
+                mScale = Math.max(mMinZoom, Math.min(mMaxZoom, mScale))
                 scrollView.scaleX = mScale
                 scrollView.scaleY = mScale
                 return true
             }
         })
     }
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         super.dispatchTouchEvent(ev)
         mScaleDetector.onTouchEvent(ev)
@@ -110,7 +163,13 @@ class EpisodeActivity : AppCompatActivity() {
         }else if(doubleClickFlag == 2){
             doubleClickFlag = 0
             //더블클릭 이벤트
-            Toast.makeText(this, "더블클릭", Toast.LENGTH_SHORT).show()
+            if(scrollView.scaleX == mMaxZoom && scrollView.scaleY == mMaxZoom){
+                scrollView.scaleX = mMinZoom
+                scrollView.scaleY = mMinZoom
+            }else if(scrollView.scaleX == mMinZoom && scrollView.scaleY == mMinZoom){
+                scrollView.scaleX = mMaxZoom
+                scrollView.scaleY = mMaxZoom
+            }
         }
     }
 
@@ -118,33 +177,5 @@ class EpisodeActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
-    }
-}
-
-class GestureListener : GestureDetector.SimpleOnGestureListener() {
-    override fun onDown(e: MotionEvent): Boolean {
-//        var touchX = 0f
-//        var touchY = 0f
-//        var dx = 0f
-//        var dy = 0f
-//
-//        if(e.action == MotionEvent.ACTION_DOWN) {
-//            touchX = e.x
-//            touchY = e.y
-//        }else if(e.action == MotionEvent.ACTION_MOVE) {
-//            dx = e.x - touchX
-//            dy = e.y - touchY
-//
-//            ScrollView.X += dx
-//            ScrollView.Y += dy
-//
-//            touchX = e.x
-//            touchY = e.y
-//        }
-        return true
-    }
-
-    override fun onDoubleTap(e: MotionEvent): Boolean {
-        return true
     }
 }
