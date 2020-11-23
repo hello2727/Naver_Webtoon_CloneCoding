@@ -26,6 +26,7 @@
 <div>
   <img width="200", src="https://user-images.githubusercontent.com/43267195/98905111-35edc480-24fe-11eb-96e7-76a4c3943532.gif">
   <img width="200", src="https://user-images.githubusercontent.com/43267195/98905148-456d0d80-24fe-11eb-9f0e-eff97c104026.gif">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/99513371-e90e6000-29cd-11eb-8415-fa5f8c22557e.gif">
 </div>
 
 ## 진행상황 알림
