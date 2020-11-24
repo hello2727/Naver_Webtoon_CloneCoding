@@ -24,7 +24,7 @@ import com.example.android.webtoon.webtoon.data.contentUnit
 
 class EpisodeActivity : AppCompatActivity() {
     var doubleClickFlag = 0
-    var CLICK_DELAY = 200L;
+    var CLICK_DELAY = 1000L;
 
     lateinit var scrollView : ScrollView
     var mScale = 1f
@@ -163,7 +163,7 @@ class EpisodeActivity : AppCompatActivity() {
         }else if(doubleClickFlag == 2){
             doubleClickFlag = 0
             //더블클릭 이벤트
-            if(scrollView.scaleX == mMaxZoom && scrollView.scaleY == mMaxZoom){
+            if(scrollView.scaleX > mMinZoom && scrollView.scaleX <= mMaxZoom && scrollView.scaleY > mMinZoom && scrollView.scaleY <= mMaxZoom){
                 scrollView.scaleX = mMinZoom
                 scrollView.scaleY = mMinZoom
             }else if(scrollView.scaleX == mMinZoom && scrollView.scaleY == mMinZoom){
@@ -171,6 +171,30 @@ class EpisodeActivity : AppCompatActivity() {
                 scrollView.scaleY = mMaxZoom
             }
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        var touchX = 0f
+        var touchY = 0f
+        var dx = 0f
+        var dy = 0f
+        when(event.action){
+            MotionEvent.ACTION_DOWN -> {
+                touchX = event.x
+                touchY = event.y
+            }
+            MotionEvent.ACTION_MOVE -> {
+                dx = event.x - touchX
+                dy = event.y - touchY
+
+                scrollView.x += dx
+                scrollView.y += dy
+
+                touchX = event.x
+                touchY = event.y
+            }
+        }
+        return super.onTouchEvent(event)
     }
 
     /* 뒤로가기 버튼 이벤트 */
