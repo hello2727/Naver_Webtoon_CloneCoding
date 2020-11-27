@@ -1,15 +1,24 @@
 package com.example.android.webtoon.webtoon.imageViewer
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
+import android.view.View
 import android.widget.ScrollView
+import com.example.android.webtoon.R
 
-class Viewer1 : ScrollView {
-    var enableScrolling = true
+class Viewer1 @JvmOverloads constructor(
+    context: Context,
+    attrs : AttributeSet
+): View(context, attrs) {
+//    var enableScrolling = true
 
 //    lateinit var mBitmap : Bitmap
     var mImageWidth = 0
@@ -18,16 +27,22 @@ class Viewer1 : ScrollView {
     val mMaxZoom = 2.0f
     var mScaleFactor = 1f
 //    var mScaleGestureDetector : ScaleGestureDetector
-    val NONE = 0
-    val PAN = 1
-    val ZOOM = 2
-    var mEventState = 0
-    var mStartX = 0f
-    var mStartY = 0f
-    var mTranslateX = 0f
-    var mTranslateY = 0f
-    var mPreviousTranslateX = 0f
-    var mPreviousTranslateY = 0f
+//    val NONE = 0
+//    val PAN = 1
+//    val ZOOM = 2
+//    var mEventState = 0
+//    var mStartX = 0f
+//    var mStartY = 0f
+//    var mTranslateX = 0f
+//    var mTranslateY = 0f
+//    var mPreviousTranslateX = 0f
+//    var mPreviousTranslateY = 0f
+
+//    var imagePath : String? = null
+    var imagePath : Int = 0
+    var paint : Paint
+    lateinit var cacheBitmap : Bitmap
+    lateinit var cacheCanvas : Canvas
 //
 //    class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
 //        override fun onScale(detector: ScaleGestureDetector): Boolean {
@@ -37,15 +52,7 @@ class Viewer1 : ScrollView {
 //        }
 //    }
 //
-    constructor(context: Context) : super(context) {
-
-    }
-    constructor(context: Context, attrs : AttributeSet) : super(context, attrs) {
 //        mScaleGestureDetector = ScaleGestureDetector(getContext(), ScaleListener())
-    }
-    constructor(context: Context, attrs: AttributeSet, defStyle : Int) : super(context, attrs, defStyle) {
-
-    }
 //
 //    override fun onTouchEvent(event: MotionEvent): Boolean {
 //        when(event.action) {
@@ -75,23 +82,31 @@ class Viewer1 : ScrollView {
 //        return true
 //    }
 //
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+//    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+//
+//        var imageWidth = MeasureSpec.getSize(widthMeasureSpec)
+//        var imageHeight = MeasureSpec.getSize(heightMeasureSpec)
+//        var scaledWidth = Math.round(mImageWidth * mScaleFactor)
+//        var scaledHeight = Math.round(mImageHeight * mScaleFactor)
+//
+//        setMeasuredDimension(
+//            Math.min(imageWidth, scaledWidth),
+//            Math.min(imageHeight, scaledHeight)
+//        )
+//    }
 
-        var imageWidth = MeasureSpec.getSize(widthMeasureSpec)
-        var imageHeight = MeasureSpec.getSize(heightMeasureSpec)
-        var scaledWidth = Math.round(mImageWidth * mScaleFactor)
-        var scaledHeight = Math.round(mImageHeight * mScaleFactor)
-
-        setMeasuredDimension(
-            Math.min(imageWidth, scaledWidth),
-            Math.min(imageHeight, scaledHeight)
-        )
+    /* 초기화 */
+    init {
+        paint = Paint()
     }
-//
-//    override fun onDraw(canvas: Canvas) {
-//        super.onDraw(canvas)
-//
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+
+        if(cacheBitmap != null){
+            canvas.drawBitmap(cacheBitmap, 0f, 0f, null)
+        }
 //        canvas.save()
 //        canvas.scale(mScaleFactor, mScaleFactor)
 //        if((mTranslateX * -1) < 0) {
@@ -107,9 +122,23 @@ class Viewer1 : ScrollView {
 //        canvas.translate(mTranslateX/mScaleFactor, mTranslateY/mScaleFactor)
 //        canvas.drawBitmap(mBitmap, 0f, 0f, null)
 //        canvas.restore()
-//    }
-//
-//    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-//        super.onSizeChanged(w, h, oldw, oldh)
-//    }
+    }
+    fun createCacheBitmap(w : Int, h: Int){
+        Log.i("Height", measuredHeight.toString())
+        Log.i("Width", measuredWidth.toString())
+        cacheBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        cacheCanvas = Canvas()
+        cacheCanvas.setBitmap(cacheBitmap)
+    }
+    fun Drawing() {
+        var bitmap: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.sample6)
+        cacheCanvas.drawBitmap(bitmap, 100f, 100f, paint)
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        createCacheBitmap(w, h)
+        Drawing()
+    }
 }
