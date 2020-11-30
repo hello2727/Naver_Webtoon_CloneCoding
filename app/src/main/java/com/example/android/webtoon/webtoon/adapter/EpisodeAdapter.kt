@@ -35,12 +35,9 @@ class EpisodeAdapter(val context: Context?, val episodeUnit: ArrayList<contentUn
 
     inner class Holder(itemView: View, itemClick: (contentUnit) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val iv_content = itemView.findViewById<ImageView>(R.id.iv_content)
-//        val iv_content = itemView.findViewById<Viewer1>(R.id.viewer1)
 
         fun bind (list: contentUnit, context: Context) {
             iv_content?.setImageResource(R.drawable.sample8)
-//            iv_content.imagePath = R.drawable.sample3
-//            iv_content.invalidate()
 
             /* 아이템 클릭시 동작 */
             itemView.setOnClickListener { itemClick(list) }
