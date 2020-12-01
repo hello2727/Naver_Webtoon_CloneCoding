@@ -84,12 +84,15 @@ class EpisodeActivity : AppCompatActivity() {
                 var moveY = e2.y
                 oldPointerCount = e2.pointerCount
                 if(oldPointerCount == 2){
-                    startX = e2.getX(0)
-                    startY = e2.getY(0)
                     dx = e2.getX(0) - e2.getX(1)
-                    dy = e2.getY(0) - e1.getY(0)
+                    dy = e2.getY(0) - e2.getY(1)
+                    var distance = (Math.sqrt((dx*dx+dy*dy).toDouble())).toFloat()
 
                     Log.d("개", "$oldPointerCount $dx ${e2.getX(0)} ${e2.getX(1)}")
+                }else if(oldPointerCount == 1){
+
+
+                    Log.d("손가락 1개", "$oldPointerCount")
                 }
 
                 return super.onScroll(e1, e2, distanceX, distanceY)
@@ -136,6 +139,7 @@ class EpisodeActivity : AppCompatActivity() {
             }
         }
         if (doubleClickFlag == 2 && dx == 0f) {
+            Log.d("뭐지?", "$dx")
             doubleClickFlag = 0
             //더블클릭 이벤트
             if (scrollView.scaleX > mMinZoom && scrollView.scaleX <= mMaxZoom && scrollView.scaleY > mMinZoom && scrollView.scaleY <= mMaxZoom) {
