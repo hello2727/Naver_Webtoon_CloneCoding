@@ -1,22 +1,12 @@
 package com.example.android.webtoon.webtoon
 
-import android.graphics.Matrix
-import android.graphics.Rect
-import android.graphics.RectF
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.text.method.Touch
 import android.util.Log
-import android.view.GestureDetector
-import android.view.MotionEvent
-import android.view.ScaleGestureDetector
-import android.view.View
-import android.widget.LinearLayout
+import android.view.*
 import android.widget.ScrollView
-import android.widget.Scroller
-import androidx.core.graphics.scaleMatrix
-import androidx.core.graphics.translationMatrix
-import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
@@ -29,13 +19,17 @@ class EpisodeActivity : AppCompatActivity() {
 
     lateinit var scrollView: ScrollView
     lateinit var mScaleDetector: ScaleGestureDetector
-//    lateinit var gestureDetector: GestureDetector
+    lateinit var gestureDetector: GestureDetector
+//    lateinit var mTouchListener : Touch
     var mScale = 1.0f
     val mMinZoom = 1.0f
     val mMaxZoom = 2.0f
 
     var startX = 0.0f
     var startY = 0.0f
+    var dx = 0f
+    var dy = 0f
+    var oldPointerCount = 0
 
     private lateinit var rv_listOfcontent: RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
@@ -73,74 +67,42 @@ class EpisodeActivity : AppCompatActivity() {
 
         /* 이미지 뷰어 */
         scrollView = findViewById(R.id.sv_epi)
-        rv_listOfcontent.setOnTouchListener(object : View.OnTouchListener{
-            override fun onTouch(v: View, event: MotionEvent): Boolean {
-                var action = event.action
-                var pointerCount = event.pointerCount
-                var touchX = 0f
-                var touchY = 0f
-
-                when(action){
-                    MotionEvent.ACTION_DOWN -> {
-                        startX = event.x
-                        startY = event.y
-
-                        touchX = event.x
-                        touchY = event.y
-
-                        DoubleClick()
-                        return true
-                    }
-                    MotionEvent.ACTION_MOVE -> {
-                        if(pointerCount == 1){
-                            var curX = event.x
-                            var curY = event.y
-
-                            var dx = touchX - curX
-                            var dy = touchY - curY
-
-//                            scrollView.x += dx
-//                            scrollView.y += dy
-
-                            touchX = event.x
-                            touchY = event.y
-                        }else if(pointerCount == 2){
-                            
-                        }
-                    }
-                }
-                Log.d("개", "$pointerCount")
-                return true
-            }
-        })
         zoomInOut()
     }
 
     /* 1. , 2. 화면 줌인 및 줌아웃 */
     fun zoomInOut() {
-//        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
-//            override fun onDown(e: MotionEvent): Boolean {
-//                startX = e.getX(0)
-//                startY = e.getY(0)
-//
-//                return super.onDown(e)
-//            }
-//            override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-//                //카메라 필요할 듯....
-//                var dx = e2.getX(0) - e1.getX(0)
-//                var dy = e2.getY(0) - e1.getY(0)
-//
-//                return super.onScroll(e1, e2, distanceX, distanceY)
-//            }
-//            override fun onSingleTapUp(e: MotionEvent): Boolean {
-//                if (e.getX(0) == 0f && e.getY(0) == 0f) {
-//                    startX = e.getX(1)
-//                    startY = e.getY(1)
-//                }
-//
-//                return super.onSingleTapUp(e)
-//            }
-//        })
+        gestureDetector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDown(e: MotionEvent): Boolean {
+                startX = e.x
+                startY = e.y
+
+                return super.onDown(e)
+            }
+            override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
+                var moveX = -e2.x
+                var moveY = e2.y
+                oldPointerCount = e2.pointerCount
+                if(oldPointerCount == 2){
+                    startX = e2.getX(0)
+                    startY = e2.getY(0)
+                    dx = e2.getX(0) - e2.getX(1)
+                    dy = e2.getY(0) - e1.getY(0)
+
+                    Log.d("개", "$oldPointerCount $dx ${e2.getX(0)} ${e2.getX(1)}")
+                }
+
+                return super.onScroll(e1, e2, distanceX, distanceY)
+            }
+            override fun onSingleTapUp(e: MotionEvent): Boolean {
+                oldPointerCount = e.pointerCount
+                dx = 0f
+
+                Log.d("개", "$oldPointerCount $dx")
+                return super.onSingleTapUp(e)
+            }
+
+        })
         mScaleDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
                 override fun onScale(detector: ScaleGestureDetector): Boolean {
                     mScale *= detector.scaleFactor
@@ -151,6 +113,7 @@ class EpisodeActivity : AppCompatActivity() {
                     scrollView.pivotX = startX
                     scrollView.pivotY = startY
 
+                    Log.d("줌인아웃", "$startX")
                     return true
                 }
             })
@@ -159,9 +122,8 @@ class EpisodeActivity : AppCompatActivity() {
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         super.dispatchTouchEvent(ev)
         mScaleDetector.onTouchEvent(ev)
-//        gestureDetector.onTouchEvent(ev)
-//        return gestureDetector.onTouchEvent(ev)
-        return mScaleDetector.onTouchEvent(ev)
+        gestureDetector.onTouchEvent(ev)
+        return gestureDetector.onTouchEvent(ev)
     }
 
     /* 화면 더블클릭 이벤트(원본에서 더블클릭하면 확대화면, 확대화면에서 더블클릭하면 원본 화면으로 변환) */
@@ -173,9 +135,7 @@ class EpisodeActivity : AppCompatActivity() {
                 //클릭 이벤트
             }
         }
-        if (doubleClickFlag == 1) {
-            Handler().postDelayed(clickRunnable, CLICK_DELAY)
-        } else if (doubleClickFlag == 2) {
+        if (doubleClickFlag == 2 && dx == 0f) {
             doubleClickFlag = 0
             //더블클릭 이벤트
             if (scrollView.scaleX > mMinZoom && scrollView.scaleX <= mMaxZoom && scrollView.scaleY > mMinZoom && scrollView.scaleY <= mMaxZoom) {
@@ -189,6 +149,8 @@ class EpisodeActivity : AppCompatActivity() {
                 scrollView.pivotX = startX
                 scrollView.pivotY = startY
             }
+        }else{
+            Handler().postDelayed(clickRunnable, CLICK_DELAY)
         }
     }
 
