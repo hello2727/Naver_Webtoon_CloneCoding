@@ -68,9 +68,8 @@ class Monday : Fragment() {
 
             var days : Elements = document.select("div.col_inner h4 span")
             for(e in days){
-                Log.d("요일", "$e")
+                var day = e.toString().substring(6, 7)
             }
         }
     }
-
 }

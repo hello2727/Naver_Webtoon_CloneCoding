@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TabHost
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentActivity
@@ -27,9 +28,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_webtoon_main.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.find
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val NUM_PAGES = 5
 
@@ -95,8 +100,31 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
         vp_webtoonOfWeek.adapter = ViewPagerAdapterOfList
 
         initViewPagerOfList()
-
+        getDays()
         return rootView
+    }
+
+    /* 1.네이버웹툰 페이지에서 요일 가져오기 2.현재요일에 맞게 탭 고정 */
+    fun getDays(){
+        doAsync {
+            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
+
+            var days : Elements = document.select("div.col_inner h4 span")
+            var idx = 0 //요일array의 인덱스
+            for(e in days){
+                var day = e.toString().substring(6, 7) //요일 추출
+                //실시간 요일 가져오기
+                var currentTime : Date = Calendar.getInstance().time
+                var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
+
+                //앱 실행시 현재 요일 탭 선택
+                if(weekDay.equals(day)){
+                    tab_week.setScrollPosition(1, idx.toFloat(), true)
+                }
+                Log.d("요일", "$day $weekDay")
+                idx++
+            }
+        }
     }
 
     private fun setWebtoonItem() {
@@ -178,7 +206,6 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
         super.onPause()
         isRunning = false
     }
-
     override fun onResume() {
         super.onResume()
         isRunning = true
@@ -217,9 +244,7 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
 }
 
 class ViewPagerAdapter2(fa: Fragment):FragmentStateAdapter(fa){
-
     override fun getItemCount(): Int = 9
-
     override fun createFragment(position: Int): Fragment {
         return when(position){
             1 -> Monday()
