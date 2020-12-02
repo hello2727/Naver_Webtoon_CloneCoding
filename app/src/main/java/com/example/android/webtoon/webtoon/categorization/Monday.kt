@@ -2,6 +2,7 @@ package com.example.android.webtoon.webtoon.categorization
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,9 @@ import com.example.android.webtoon.R
 import com.example.android.webtoon.webtoon.adapter.CategoryAdapter
 import com.example.android.webtoon.webtoon.data.ListItem
 import com.example.android.webtoon.webtoon.deepWebtoonActivity
+import org.jetbrains.anko.doAsync
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 
 class Monday : Fragment() {
     private lateinit var rv_listOfWebtoon : RecyclerView
@@ -26,10 +30,7 @@ class Monday : Fragment() {
         ListItem("", "인간의 온도", "9.90", "휴재", "이재익/양세준")
     )
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var rootView = inflater.inflate(R.layout.fragment_monday, container, false)
 
         val rvAdapter = CategoryAdapter(context, webtoonList) {ListItem ->
@@ -57,7 +58,19 @@ class Monday : Fragment() {
             addItemDecoration(DividerItemDecoration(context, GridLayoutManager.HORIZONTAL))
         }
 
+        getSource()
         return rootView
+    }
+
+    fun getSource(){
+        doAsync {
+            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
+
+            var days : Elements = document.select("div.col_inner h4 span")
+            for(e in days){
+                Log.d("요일", "$e")
+            }
+        }
     }
 
 }

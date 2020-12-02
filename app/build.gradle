@@ -63,6 +63,7 @@ dependencies {
 
     //jsoup (웹에서 정보 가져오기)
     implementation 'org.jsoup:jsoup:1.13.1'
+    implementation "org.jetbrains.anko:anko:0.10.8"
 
     //glide (추천웹툰 이미지 이미지뷰에 로더)
     implementation 'com.github.bumptech.glide:glide:4.11.0'
