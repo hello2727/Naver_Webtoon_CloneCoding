@@ -7,11 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TabHost
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -29,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_webtoon_main.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.find
+import org.jetbrains.anko.sdk27.coroutines.onScrollChange
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import java.lang.Exception
@@ -99,18 +95,24 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
         vp_webtoonOfWeek = rootView.findViewById(R.id.vp_webtoonOfWeek)
         vp_webtoonOfWeek.adapter = ViewPagerAdapterOfList
 
-        initViewPagerOfList()
+        makeWeekDayTab()
         getDaysAndFixedTodayTab()
         return rootView
     }
 
+    /* 1.상단의 요일탭 생성 2.뷰페이저와 탭레이아웃 스크롤 연결 */
+    private fun makeWeekDayTab() {
+        TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
+            tab.text = tab_weekTextArray[position]
+        }.attach()
+    }
     /* 1.네이버웹툰 페이지에서 요일 가져오기 2.현재요일에 맞게 탭 고정 */
     fun getDaysAndFixedTodayTab(){
         doAsync {
             val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
 
             var days : Elements = document.select("div.col_inner h4 span")
-            var idx = 0 //요일array의 인덱스
+            var idx = 1 //요일array의 인덱스
             for(e in days){
                 var day = e.toString().substring(6, 7) //요일 추출
                 //실시간 요일 가져오기
@@ -119,11 +121,15 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
 
                 //앱 실행시 현재 요일 탭 선택
                 if(weekDay.equals(day)){
-                    tab_week.setScrollPosition(1, idx.toFloat(), true)
+                    tab_week.setScrollPosition(idx, 0f, true, true)
+                    vp_recommendedWebtoon.setCurrentItem(idx, true)
+
+                    Log.d("요일", "${tab_week.getTabAt(idx)}")
                 }
                 Log.d("요일", "$day $weekDay")
                 idx++
             }
+            ViewPagerAdapterOfList
         }
     }
 
@@ -218,13 +224,6 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
 
     override fun onClick(p0: View?) {
 
-    }
-
-    /*항목별 웹툰 리스트*/
-    private fun initViewPagerOfList() {
-        TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
-            tab.text = tab_weekTextArray[position]
-        }.attach()
     }
 
     /* 뒤로가기 버튼 이벤트 처리 */
