@@ -100,12 +100,12 @@ class webtoonMain : Fragment(), View.OnClickListener, Interaction {
         vp_webtoonOfWeek.adapter = ViewPagerAdapterOfList
 
         initViewPagerOfList()
-        getDays()
+        getDaysAndFixedTodayTab()
         return rootView
     }
 
     /* 1.네이버웹툰 페이지에서 요일 가져오기 2.현재요일에 맞게 탭 고정 */
-    fun getDays(){
+    fun getDaysAndFixedTodayTab(){
         doAsync {
             val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
 
