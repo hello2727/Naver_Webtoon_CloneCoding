@@ -11,13 +11,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/AppTheme">
-        <activity android:name=".webtoon.EpisodeActivity"></activity>
-        <activity android:name=".webtoon.deepWebtoonActivity" />
-        <activity android:name=".more.option.PaymentActivity" />
-        <activity android:name=".more.option.SettingActivity" />
-        <activity android:name=".more.option.NoticeActivity" />
-        <activity android:name=".more.option.SearchActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".view.EpisodeActivity"></activity>
+        <activity android:name=".view.deepWebtoonActivity" />
+        <activity android:name="com.example.android.webtoon.view.view_more.option.PaymentActivity" />
+        <activity android:name="com.example.android.webtoon.view.view_more.option.SettingActivity" />
+        <activity android:name="com.example.android.webtoon.view.view_more.option.NoticeActivity" />
+        <activity android:name="com.example.android.webtoon.view.view_more.option.SearchActivity" />
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

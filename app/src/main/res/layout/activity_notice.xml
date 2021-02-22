@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".more.option.NoticeActivity">
+    tools:context=".view.view_more.option.NoticeActivity">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
