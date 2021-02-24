@@ -1,35 +1,18 @@
 package com.example.android.webtoon.view
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.whenResumed
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.android.webtoon.R
-import com.example.android.webtoon.view.adapter.Interface.Interaction
-import com.example.android.webtoon.view.adapter.ViewPagerAdapter
-import com.example.android.webtoon.view.view_categorization.Monday
 import com.example.android.webtoon.model.RecommendedItem
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import com.example.android.webtoon.view.adapter.WebtoonAdvertisementViewPagerAdapter
 import kotlinx.android.synthetic.main.fragment_init_screen.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import org.jetbrains.anko.doAsync
-import org.jsoup.Jsoup
-import org.jsoup.select.Elements
-import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlinx.android.synthetic.main.item_layout_recommended.*
 
 private const val NUM_PAGES = 5
 
@@ -38,8 +21,8 @@ class initScreenFragment : Fragment() {
 //    private lateinit var callback: OnBackPressedCallback
 //
 //    private lateinit var vp_recommendedWebtoon: ViewPager2
-//    private lateinit var viewPagerAdapter: ViewPagerAdapter
-//    private lateinit var viewModel: webtoonMainViewModel
+    private lateinit var webtoonAdvertisementViewPagerAdapter: WebtoonAdvertisementViewPagerAdapter
+    private lateinit var webtoonAdvertisementViewModel: WebtoonAdvertisement
 //    private var isRunning = true
 //
 //    private var webtoonUrl = "https://comic.naver.com/index.nhn";
@@ -52,7 +35,11 @@ class initScreenFragment : Fragment() {
 //    private var tab_weekTextArray = arrayOf("신작","월","화","수","목","금","토","일","완결")
 //
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView = inflater.inflate(R.layout.fragment_init_screen, container, false)
+        super.onCreateView(inflater, container, savedInstanceState)
+        return inflater.inflate(R.layout.fragment_init_screen, container, false)
+
+        //초기화
+        init()
 //
 ////        setWebtoonItem()
 //        viewModel = ViewModelProvider(this).get(webtoonMainViewModel::class.java)
@@ -94,9 +81,57 @@ class initScreenFragment : Fragment() {
 //
 //        makeWeekDayTab()
 //        getDaysAndFixedTodayTab()
-        return rootView
     }
-//
+
+    fun init(){
+        webtoonAdvertisementViewModel = ViewModelProvider(this).get(WebtoonAdvertisement::class.java)
+        webtoonAdvertisementViewModel.setRecommendedItems(
+            listOf(
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5),
+                RecommendedItem(R.drawable.sample5)
+            )
+        )
+
+        // 웹툰광고배너 설정
+        initWebtoonAdvertisementViewPager2()
+    }
+
+    private fun initWebtoonAdvertisementViewPager2() {
+        vp_recommendedWebtoon.apply {
+            webtoonAdvertisementViewPagerAdapter = WebtoonAdvertisementViewPagerAdapter()
+            adapter = webtoonAdvertisementViewPagerAdapter
+            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+                override fun onPageSelected(position: Int) {
+                    super.onPageSelected(position)
+
+                    tv_currentPageNumber.text = "${position+1}"
+
+                    //직접 유저가 스크롤했을 때
+//                    webtoonAdvertisementViewModel.setCurrentPosition(position)
+                }
+            })
+
+        }
+    }
+
+    private fun subscribeObservers() {
+        //뷰페이저 어댑터에 웹툰광고배너 리스트 넘기고 세팅하기
+        webtoonAdvertisementViewModel.recommendedItemList.observe(this, Observer { recommendedItemList ->
+            webtoonAdvertisementViewPagerAdapter.submitList(recommendedItemList)
+        })
+//        viewModel.currentPosition.observe(viewLifecycleOwner, Observer { currentPosition ->
+//            vp_recommendedWebtoon.currentItem = currentPosition
+//        })
+    }
+
 //    /* 1.상단의 요일탭 생성 2.뷰페이저와 탭레이아웃 스크롤 연결 */
 //    private fun makeWeekDayTab() {
 //        TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
@@ -129,7 +164,7 @@ class initScreenFragment : Fragment() {
 //            ViewPagerAdapterOfList
 //        }
 //    }
-//
+
 //    private fun setWebtoonItem() {
 //        lifecycleScope.launch {
 //            var idx: Int = 0
@@ -162,36 +197,7 @@ class initScreenFragment : Fragment() {
 //            }
 //        }
 //    }
-//
-//    /*추천웹툰 아이템*/
-//    private fun initViewPager2() {
-//        vp_recommendedWebtoon.apply {
-//            viewPagerAdapter = ViewPagerAdapter(this@initScreenFragment)
-//            adapter = viewPagerAdapter
-//            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
-//                override fun onPageSelected(position: Int) {
-//                    super.onPageSelected(position)
-//
-//                    isRunning = true
-//                    tv_currentPageNumber.text = "${position+1}"
-//
-//                    //직접 유저가 스크롤했을 때
-//                    viewModel.setCurrentPosition(position)
-//                }
-//            })
-//
-//        }
-//    }
-//
-//    private fun subscribeObservers() {
-//        viewModel.recommendedItemList.observe(viewLifecycleOwner, Observer { recommendedItemList ->
-//            viewPagerAdapter.submitList(recommendedItemList)
-//        })
-//        viewModel.currentPosition.observe(viewLifecycleOwner, Observer { currentPosition ->
-//            vp_recommendedWebtoon.currentItem = currentPosition
-//        })
-//    }
-//
+
 //    private fun autoScrollViewPager() {
 //        lifecycleScope.launch {
 //            whenResumed {

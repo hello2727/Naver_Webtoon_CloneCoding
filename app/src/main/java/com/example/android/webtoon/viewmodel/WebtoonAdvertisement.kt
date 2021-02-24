@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.android.webtoon.model.RecommendedItem
 
-class webtoonMainViewModel: ViewModel() {
+class WebtoonAdvertisement: ViewModel() {
     private val _recommendedItemList: MutableLiveData<List<RecommendedItem>> = MutableLiveData()
     private val _currentPosition: MutableLiveData<Int> = MutableLiveData()
 
