@@ -102,6 +102,8 @@ class initScreenFragment : Fragment() {
 
         // 웹툰광고배너 설정
         initWebtoonAdvertisementViewPager2()
+        // 뷰페이저 어댑터에 웹툰광고배너 리스트 넘기고 세팅하기
+        subscribeObservers()
     }
 
     private fun initWebtoonAdvertisementViewPager2() {
@@ -123,8 +125,7 @@ class initScreenFragment : Fragment() {
     }
 
     private fun subscribeObservers() {
-        //뷰페이저 어댑터에 웹툰광고배너 리스트 넘기고 세팅하기
-        webtoonAdvertisementViewModel.recommendedItemList.observe(this, Observer { recommendedItemList ->
+        webtoonAdvertisementViewModel.recommendedItemList.observe(viewLifecycleOwner, Observer { recommendedItemList ->
             webtoonAdvertisementViewPagerAdapter.submitList(recommendedItemList)
         })
 //        viewModel.currentPosition.observe(viewLifecycleOwner, Observer { currentPosition ->
