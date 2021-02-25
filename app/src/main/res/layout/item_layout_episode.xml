@@ -9,6 +9,6 @@
         android:id="@+id/iv_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/sample8" />
+        app:srcCompat="@drawable/thumbnail01" />
 
 </LinearLayout>

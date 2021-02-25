@@ -9,14 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.android.webtoon.R
-import com.example.android.webtoon.model.RecommendedItem
+import com.example.android.webtoon.model.remote.RecommendedItem
 import com.example.android.webtoon.view.adapter.Interface.Interaction
 import com.example.android.webtoon.view.adapter.WebtoonAdvertisementViewPagerAdapter
-import com.example.android.webtoon.view.view_categorization.Monday
 import kotlinx.android.synthetic.main.fragment_init_screen.*
 import kotlinx.android.synthetic.main.item_layout_recommended.*
 import kotlinx.coroutines.delay
@@ -62,19 +59,20 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
     }
 
     fun init(){
+        //웹툰 썸네일 이미지 보안정책 때문에 서버에서 직접 가져올 수 없어서 이미지를 drawable폴더에 저장하여 이미지뷰에 로드함.
         webtoonAdvertisementViewModel = ViewModelProvider(this).get(WebtoonAdvertisement::class.java)
         webtoonAdvertisementViewModel.setRecommendedItems(
             listOf(
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg")
+                RecommendedItem(R.drawable.thumbnail01),
+                RecommendedItem(R.drawable.thumbnail02),
+                RecommendedItem(R.drawable.thumbnail03),
+                RecommendedItem(R.drawable.thumbnail04),
+                RecommendedItem(R.drawable.thumbnail05),
+                RecommendedItem(R.drawable.thumbnail06),
+                RecommendedItem(R.drawable.thumbnail07),
+                RecommendedItem(R.drawable.thumbnail08),
+                RecommendedItem(R.drawable.thumbnail09),
+                RecommendedItem(R.drawable.thumbnail10)
             )
         )
 
@@ -101,7 +99,6 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
                     webtoonAdvertisementViewModel.setCurrentPosition(position)
                 }
             })
-
         }
     }
 

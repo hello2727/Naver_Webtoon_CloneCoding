@@ -4,11 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.android.webtoon.R
-import com.example.android.webtoon.util.GlideApp
-import com.example.android.webtoon.model.RecommendedItem
+import com.example.android.webtoon.model.remote.RecommendedItem
 import com.example.android.webtoon.view.adapter.Interface.Interaction
-import com.example.android.webtoon.view.initScreenFragment
 import kotlinx.android.synthetic.main.item_layout_recommended.view.*
 
 class WebtoonAdvertisementViewPagerAdapter(private val interaction: Interaction) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -47,11 +46,9 @@ class WebtoonAdvertisementViewPagerAdapter(private val interaction: Interaction)
             itemView.setOnClickListener{
                 interaction.onRecommendedItemClicked(recommendedItem)
             }
-            /*
-            추천웹툰 이미지 로딩
-             */
-//            itemView.iv_recommended_item.setImageResource(recommendedItem.image)
-            GlideApp.with(itemView).load(recommendedItem.image).placeholder(R.drawable.sample4).into(itemView.iv_recommended_item)
+
+            //웹툰광고배너 이미지 로드
+            Glide.with(itemView.context).load(recommendedItem.IMAGE_ID).placeholder(R.drawable.thumbnail01).into(itemView.iv_recommended_item)
         }
     }
 }

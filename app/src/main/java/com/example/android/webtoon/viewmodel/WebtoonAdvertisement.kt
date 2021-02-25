@@ -3,7 +3,7 @@ package com.example.android.webtoon.view
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.android.webtoon.model.RecommendedItem
+import com.example.android.webtoon.model.remote.RecommendedItem
 
 class WebtoonAdvertisement: ViewModel() {
     private val _recommendedItemList: MutableLiveData<List<RecommendedItem>> = MutableLiveData()

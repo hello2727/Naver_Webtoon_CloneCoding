@@ -36,7 +36,7 @@ class EpisodeAdapter(val context: Context?, val episodeUnit: ArrayList<contentUn
         val iv_content = itemView.findViewById<ImageView>(R.id.iv_content)
 
         fun bind (list: contentUnit, context: Context) {
-            iv_content?.setImageResource(R.drawable.sample8)
+            iv_content?.setImageResource(R.drawable.thumbnail01)
 
             /* 아이템 클릭시 동작 */
             itemView.setOnClickListener { itemClick(list) }
