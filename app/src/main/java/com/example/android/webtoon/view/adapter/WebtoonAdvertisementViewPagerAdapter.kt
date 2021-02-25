@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
 import com.example.android.webtoon.util.GlideApp
-import com.example.android.webtoon.view.adapter.Interface.Interaction
 import com.example.android.webtoon.model.RecommendedItem
+import com.example.android.webtoon.view.adapter.Interface.Interaction
+import com.example.android.webtoon.view.initScreenFragment
 import kotlinx.android.synthetic.main.item_layout_recommended.view.*
 
-class WebtoonAdvertisementViewPagerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WebtoonAdvertisementViewPagerAdapter(private val interaction: Interaction) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val ITEM_COUNT = 10
@@ -20,7 +21,8 @@ class WebtoonAdvertisementViewPagerAdapter : RecyclerView.Adapter<RecyclerView.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RecommendedViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_layout_recommended, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_layout_recommended, parent, false),
+            interaction
         )
     }
 
@@ -40,15 +42,16 @@ class WebtoonAdvertisementViewPagerAdapter : RecyclerView.Adapter<RecyclerView.V
     }
 
     //ViewHolder
-    class RecommendedViewHolder
-    constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class RecommendedViewHolder(itemView: View, private val interaction: Interaction) : RecyclerView.ViewHolder(itemView) {
         fun bind(recommendedItem: RecommendedItem) {
-            itemView.iv_recommended_item.setImageResource(recommendedItem.image)
+            itemView.setOnClickListener{
+                interaction.onRecommendedItemClicked(recommendedItem)
+            }
             /*
             추천웹툰 이미지 로딩
              */
 //            itemView.iv_recommended_item.setImageResource(recommendedItem.image)
-//            GlideApp.with(itemView).load(recommendedItem.image).placeholder(R.drawable.sample4).into(itemView.iv_recommended_item)
+            GlideApp.with(itemView).load(recommendedItem.image).placeholder(R.drawable.sample4).into(itemView.iv_recommended_item)
         }
     }
 }

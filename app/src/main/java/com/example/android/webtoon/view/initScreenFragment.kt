@@ -7,23 +7,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.whenResumed
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.android.webtoon.R
 import com.example.android.webtoon.model.RecommendedItem
+import com.example.android.webtoon.view.adapter.Interface.Interaction
 import com.example.android.webtoon.view.adapter.WebtoonAdvertisementViewPagerAdapter
+import com.example.android.webtoon.view.view_categorization.Monday
 import kotlinx.android.synthetic.main.fragment_init_screen.*
 import kotlinx.android.synthetic.main.item_layout_recommended.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val NUM_PAGES = 5
 
-class initScreenFragment : Fragment() {
-    //class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
+class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 //    private lateinit var callback: OnBackPressedCallback
 //
-//    private lateinit var vp_recommendedWebtoon: ViewPager2
+    private lateinit var vp_recommendedWebtoon: ViewPager2
     private lateinit var webtoonAdvertisementViewPagerAdapter: WebtoonAdvertisementViewPagerAdapter
     private lateinit var webtoonAdvertisementViewModel: WebtoonAdvertisement
-//    private var isRunning = true
+    private var isRunning = true
 //
 //    private var webtoonUrl = "https://comic.naver.com/index.nhn";
 //    private lateinit var elements: Elements
@@ -36,44 +43,14 @@ class initScreenFragment : Fragment() {
 //
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        return inflater.inflate(R.layout.fragment_init_screen, container, false)
+        var rootView = inflater.inflate(R.layout.fragment_init_screen, container, false)
 
         //초기화
+        vp_recommendedWebtoon = rootView.findViewById(R.id.vp_recommendedWebtoon)
         init()
-//
+
 ////        setWebtoonItem()
-//        viewModel = ViewModelProvider(this).get(webtoonMainViewModel::class.java)
-//        viewModel.setRecommendedItems(
-//            listOf(
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
-//                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg")
-//
-////                RecommendedItem(imgPath[1]),
-////                RecommendedItem(imgPath[2]),
-////                RecommendedItem(imgPath[3]),
-////                RecommendedItem(imgPath[4]),
-////                RecommendedItem(imgPath[5]),
-////                RecommendedItem(imgPath[6]),
-////                RecommendedItem(imgPath[7]),
-////                RecommendedItem(imgPath[8]),
-////                RecommendedItem(imgPath[9])
-//            )
-//        )
-//
-//        vp_recommendedWebtoon = rootView.findViewById(R.id.vp_recommendedWebtoon)
-//
-//        initViewPager2()
-//        subscribeObservers()
-//        autoScrollViewPager()
-//
+
 //        tab_week = rootView.findViewById(R.id.tab_week)
 //        ViewPagerAdapterOfList = ViewPagerAdapter2(this)
 //        vp_webtoonOfWeek = rootView.findViewById(R.id.vp_webtoonOfWeek)
@@ -81,22 +58,23 @@ class initScreenFragment : Fragment() {
 //
 //        makeWeekDayTab()
 //        getDaysAndFixedTodayTab()
+        return rootView
     }
 
     fun init(){
         webtoonAdvertisementViewModel = ViewModelProvider(this).get(WebtoonAdvertisement::class.java)
         webtoonAdvertisementViewModel.setRecommendedItems(
             listOf(
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5),
-                RecommendedItem(R.drawable.sample5)
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg"),
+                RecommendedItem("https://image-comic.pstatic.net/webtoon/641253/thumbnail/thumbnail_IMAG02_e046a3f5-9825-495b-a61c-fc8162fa6da4.jpg")
             )
         )
 
@@ -104,20 +82,23 @@ class initScreenFragment : Fragment() {
         initWebtoonAdvertisementViewPager2()
         // 뷰페이저 어댑터에 웹툰광고배너 리스트 넘기고 세팅하기
         subscribeObservers()
+        // 웹툰광고배너 뷰페이저 자동스크롤 세팅하기
+        autoScrollViewPager()
     }
 
     private fun initWebtoonAdvertisementViewPager2() {
         vp_recommendedWebtoon.apply {
-            webtoonAdvertisementViewPagerAdapter = WebtoonAdvertisementViewPagerAdapter()
+            webtoonAdvertisementViewPagerAdapter = WebtoonAdvertisementViewPagerAdapter(this@initScreenFragment)
             adapter = webtoonAdvertisementViewPagerAdapter
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
 
+                    isRunning = true
                     tv_currentPageNumber.text = "${position+1}"
 
                     //직접 유저가 스크롤했을 때
-//                    webtoonAdvertisementViewModel.setCurrentPosition(position)
+                    webtoonAdvertisementViewModel.setCurrentPosition(position)
                 }
             })
 
@@ -128,11 +109,23 @@ class initScreenFragment : Fragment() {
         webtoonAdvertisementViewModel.recommendedItemList.observe(viewLifecycleOwner, Observer { recommendedItemList ->
             webtoonAdvertisementViewPagerAdapter.submitList(recommendedItemList)
         })
-//        viewModel.currentPosition.observe(viewLifecycleOwner, Observer { currentPosition ->
-//            vp_recommendedWebtoon.currentItem = currentPosition
-//        })
+        webtoonAdvertisementViewModel.currentPosition.observe(viewLifecycleOwner, Observer { currentPosition ->
+            vp_recommendedWebtoon.currentItem = currentPosition
+        })
     }
 
+    private fun autoScrollViewPager() {
+        lifecycleScope.launch {
+            whenResumed {
+                while (isRunning) {
+                    delay(3000)
+                    webtoonAdvertisementViewModel.getcurrentPosition()?.let {
+                        webtoonAdvertisementViewModel.setCurrentPosition((it.plus(1)) % 10)
+                    }
+                }
+            }
+        }
+    }
 //    /* 1.상단의 요일탭 생성 2.뷰페이저와 탭레이아웃 스크롤 연결 */
 //    private fun makeWeekDayTab() {
 //        TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
@@ -199,36 +192,23 @@ class initScreenFragment : Fragment() {
 //        }
 //    }
 
-//    private fun autoScrollViewPager() {
-//        lifecycleScope.launch {
-//            whenResumed {
-//                while (isRunning) {
-//                    delay(3000)
-//                    viewModel.getcurrentPosition()?.let {
-//                        viewModel.setCurrentPosition((it.plus(1)) % 10)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        isRunning = false
-//    }
-//    override fun onResume() {
-//        super.onResume()
-//        isRunning = true
-//    }
-//
-//    //추천 웹툰 클릭했을 때
-//    override fun onRecommendedItemClicked(recommendedItem: RecommendedItem) {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun onClick(p0: View?) {
-//
-//    }
+    //추천 웹툰 클릭했을 때
+    override fun onRecommendedItemClicked(recommendedItem: RecommendedItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClick(p0: View?) {
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        isRunning = false
+    }
+    override fun onResume() {
+        super.onResume()
+        isRunning = true
+    }
 //
 //    /* 뒤로가기 버튼 이벤트 처리 */
 //    override fun onAttach(context: Context) {
@@ -246,7 +226,7 @@ class initScreenFragment : Fragment() {
 //    }
 }
 
-//class ViewPagerAdapter2(fa: Fragment):FragmentStateAdapter(fa){
+//class ViewPagerAdapter2(fa: Fragment): FragmentStateAdapter(fa){
 //    override fun getItemCount(): Int = 9
 //    override fun createFragment(position: Int): Fragment {
 //        return when(position){
