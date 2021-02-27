@@ -1,6 +1,9 @@
 package com.example.android.webtoon.view
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -153,7 +156,7 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
             val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
 
             var days : Elements = document.select("div.col_inner h4 span")
-            var idx = 1 //요일array의 인덱스
+            val handler : Handler = Handler(Looper.getMainLooper())
             for(e in days){
                 var day = e.toString().substring(6, 7) //요일 추출
                 //실시간 요일 가져오기
@@ -162,13 +165,17 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 
                 //앱 실행시 현재 요일 탭 선택
                 if(weekDay.equals(day)){
-                    tab_week.setScrollPosition(idx, 0f, true, true)
-                    vp_recommendedWebtoon.setCurrentItem(idx, true)
+                    var idx = tab_weekArray.indexOf(weekDay)
 
-                    Log.d("요일", "${tab_week.getTabAt(idx)}")
+                    handler.postDelayed({
+                        tab_week.setScrollPosition(idx, 0f, true, true)
+                        vp_recommendedWebtoon.setCurrentItem(idx, true)
+                    }, 0)
+
+                    Log.d("tabSetting", "success $idx")
+                    break
                 }
-                Log.d("요일", "$day $weekDay")
-                idx++
+                Log.d("!요일", "$day $weekDay")
             }
             ViewPagerAdapter_webtoonByDay
         }
@@ -207,7 +214,7 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 //        }
 //    }
 
-    //추천 웹툰 클릭했을 때
+    // 웹툰 썸네일 배너 클릭했을 때
     override fun onRecommendedItemClicked(recommendedItem: RecommendedItem) {
         TODO("Not yet implemented")
     }
