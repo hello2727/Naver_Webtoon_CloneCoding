@@ -20,7 +20,7 @@
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/vp_recommendedWebtoon"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="220dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

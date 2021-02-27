@@ -1,6 +1,7 @@
 package com.example.android.webtoon.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,57 +10,64 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.whenResumed
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.example.android.webtoon.R
 import com.example.android.webtoon.model.remote.RecommendedItem
 import com.example.android.webtoon.view.adapter.Interface.Interaction
 import com.example.android.webtoon.view.adapter.WebtoonAdvertisementViewPagerAdapter
+import com.example.android.webtoon.view.view_categorization.Monday
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_init_screen.*
 import kotlinx.android.synthetic.main.item_layout_recommended.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.jetbrains.anko.doAsync
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val NUM_PAGES = 5
 
 class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 //    private lateinit var callback: OnBackPressedCallback
-//
+
     private lateinit var vp_recommendedWebtoon: ViewPager2
     private lateinit var webtoonAdvertisementViewPagerAdapter: WebtoonAdvertisementViewPagerAdapter
     private lateinit var webtoonAdvertisementViewModel: WebtoonAdvertisement
     private var isRunning = true
-//
-//    private var webtoonUrl = "https://comic.naver.com/index.nhn";
-//    private lateinit var elements: Elements
-//    private var imgPath = arrayOfNulls<String>(10)
-//
-//    private lateinit var tab_week: TabLayout
-//    private lateinit var vp_webtoonOfWeek: ViewPager2
-//    private lateinit var ViewPagerAdapterOfList: ViewPagerAdapter2
-//    private var tab_weekTextArray = arrayOf("신작","월","화","수","목","금","토","일","완결")
-//
+
+    private lateinit var tab_week: TabLayout
+    private lateinit var vp_webtoonOfWeek: ViewPager2
+    private lateinit var ViewPagerAdapter_webtoonByDay: ViewPagerAdapter2
+    private var tab_weekArray = arrayOf("신작","월","화","수","목","금","토","일","완결")
+
+    //    private var webtoonUrl = "https://comic.naver.com/index.nhn";
+    //    private lateinit var elements: Elements
+    //    private var imgPath = arrayOfNulls<String>(10)
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         var rootView = inflater.inflate(R.layout.fragment_init_screen, container, false)
 
-        //초기화
+        // 초기화
         vp_recommendedWebtoon = rootView.findViewById(R.id.vp_recommendedWebtoon)
-        init()
+        tab_week = rootView.findViewById(R.id.tab_week)
+        vp_webtoonOfWeek = rootView.findViewById(R.id.vp_webtoonOfWeek)
 
+        // 웹툰 썸네일 배너 세팅
+        setThumbNailBanner()
+        // 웹툰을 요일별로 나누기
+        divideWebtoonByDay()
 ////        setWebtoonItem()
 
-//        tab_week = rootView.findViewById(R.id.tab_week)
-//        ViewPagerAdapterOfList = ViewPagerAdapter2(this)
-//        vp_webtoonOfWeek = rootView.findViewById(R.id.vp_webtoonOfWeek)
-//        vp_webtoonOfWeek.adapter = ViewPagerAdapterOfList
-//
-//        makeWeekDayTab()
-//        getDaysAndFixedTodayTab()
         return rootView
     }
 
-    fun init(){
-        //웹툰 썸네일 이미지 보안정책 때문에 서버에서 직접 가져올 수 없어서 이미지를 drawable폴더에 저장하여 이미지뷰에 로드함.
+    private fun setThumbNailBanner(){
+        //웹툰 썸네일 이미지 보안정책 때문에 서버에서 직접 가져올 수 없어서 이미지를 drawable폴더에 저장하여 웹툰광고배너 이미지뷰에 로드함.
         webtoonAdvertisementViewModel = ViewModelProvider(this).get(WebtoonAdvertisement::class.java)
         webtoonAdvertisementViewModel.setRecommendedItems(
             listOf(
@@ -123,38 +131,48 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
             }
         }
     }
-//    /* 1.상단의 요일탭 생성 2.뷰페이저와 탭레이아웃 스크롤 연결 */
-//    private fun makeWeekDayTab() {
-//        TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
-//            tab.text = tab_weekTextArray[position]
-//        }.attach()
-//    }
-//    /* 1.네이버웹툰 페이지에서 요일 가져오기 2.현재요일에 맞게 탭 고정 */
-//    fun getDaysAndFixedTodayTab(){
-//        doAsync {
-//            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
-//
-//            var days : Elements = document.select("div.col_inner h4 span")
-//            var idx = 1 //요일array의 인덱스
-//            for(e in days){
-//                var day = e.toString().substring(6, 7) //요일 추출
-//                //실시간 요일 가져오기
-//                var currentTime : Date = Calendar.getInstance().time
-//                var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
-//
-//                //앱 실행시 현재 요일 탭 선택
-//                if(weekDay.equals(day)){
-//                    tab_week.setScrollPosition(idx, 0f, true, true)
-//                    vp_recommendedWebtoon.setCurrentItem(idx, true)
-//
-//                    Log.d("요일", "${tab_week.getTabAt(idx)}")
-//                }
-//                Log.d("요일", "$day $weekDay")
-//                idx++
-//            }
-//            ViewPagerAdapterOfList
-//        }
-//    }
+
+    private fun divideWebtoonByDay(){
+        ViewPagerAdapter_webtoonByDay = ViewPagerAdapter2(this)
+        vp_webtoonOfWeek.adapter = ViewPagerAdapter_webtoonByDay
+
+        // 웹툰을 요일별로 나눌 탭 세팅
+        makeWeekDayTab()
+        // 1.네이버웹툰 페이지에서 요일 가져오기 2.현재요일에 맞게 탭에 고정
+        getDaysAndFixedTodayTab()
+    }
+
+    private fun makeWeekDayTab() {
+        TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
+            tab.text = tab_weekArray[position]
+        }.attach()
+    }
+
+    private fun getDaysAndFixedTodayTab(){
+        doAsync {
+            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
+
+            var days : Elements = document.select("div.col_inner h4 span")
+            var idx = 1 //요일array의 인덱스
+            for(e in days){
+                var day = e.toString().substring(6, 7) //요일 추출
+                //실시간 요일 가져오기
+                var currentTime : Date = Calendar.getInstance().time
+                var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
+
+                //앱 실행시 현재 요일 탭 선택
+                if(weekDay.equals(day)){
+                    tab_week.setScrollPosition(idx, 0f, true, true)
+                    vp_recommendedWebtoon.setCurrentItem(idx, true)
+
+                    Log.d("요일", "${tab_week.getTabAt(idx)}")
+                }
+                Log.d("요일", "$day $weekDay")
+                idx++
+            }
+            ViewPagerAdapter_webtoonByDay
+        }
+    }
 
 //    private fun setWebtoonItem() {
 //        lifecycleScope.launch {
@@ -198,15 +216,16 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        isRunning = false
-    }
     override fun onResume() {
         super.onResume()
         isRunning = true
     }
-//
+
+    override fun onPause() {
+        super.onPause()
+        isRunning = false
+    }
+
 //    /* 뒤로가기 버튼 이벤트 처리 */
 //    override fun onAttach(context: Context) {
 //        super.onAttach(context)
@@ -223,12 +242,12 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 //    }
 }
 
-//class ViewPagerAdapter2(fa: Fragment): FragmentStateAdapter(fa){
-//    override fun getItemCount(): Int = 9
-//    override fun createFragment(position: Int): Fragment {
-//        return when(position){
-//            1 -> Monday()
-//            else -> Monday()
-//        }
-//    }
-//}
+class ViewPagerAdapter2(fa: Fragment): FragmentStateAdapter(fa){
+    override fun getItemCount(): Int = 9
+    override fun createFragment(position: Int): Fragment {
+        return when(position){
+            1 -> Monday()
+            else -> Monday()
+        }
+    }
+}
