@@ -60,12 +60,13 @@
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_week"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 app:tabMaxWidth="45dp"
+                app:tabTextColor="@color/black"
                 app:tabMode="scrollable"
-                app:tabSelectedTextColor="#ffffff"
+                app:tabSelectedTextColor="@color/colorUnFocus"
                 app:tabBackground="@drawable/tab_background"
-                app:tabIndicatorColor="#00ff0000" />
+                app:tabIndicatorHeight="0dp" />
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_webtoonOfWeek"
                 android:layout_width="match_parent"
