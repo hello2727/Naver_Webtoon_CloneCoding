@@ -32,8 +32,6 @@ import org.jsoup.select.Elements
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val NUM_PAGES = 5
-
 class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 //    private lateinit var callback: OnBackPressedCallback
 
@@ -140,12 +138,12 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
         vp_webtoonOfWeek.adapter = ViewPagerAdapter_webtoonByDay
 
         // 웹툰을 요일별로 나눌 탭 세팅
-        makeWeekDayTab()
+        setWeekDayTab()
         // 1.네이버웹툰 페이지에서 요일 가져오기 2.현재요일에 맞게 탭에 고정
         getDaysAndFixedTodayTab()
     }
 
-    private fun makeWeekDayTab() {
+    private fun setWeekDayTab() {
         TabLayoutMediator(tab_week, vp_webtoonOfWeek) { tab, position ->
             tab.text = tab_weekArray[position]
         }.attach()
@@ -168,8 +166,7 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
                     var idx = tab_weekArray.indexOf(weekDay)
 
                     handler.postDelayed({
-                        tab_week.setScrollPosition(idx, 0f, true, true)
-                        vp_recommendedWebtoon.setCurrentItem(idx, true)
+                        tab_week.setScrollPosition(0, idx.toFloat(), true, true)
                     }, 0)
 
                     Log.d("tabSetting", "success $idx")
