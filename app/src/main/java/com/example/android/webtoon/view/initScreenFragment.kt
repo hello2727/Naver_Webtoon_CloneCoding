@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TabHost
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -135,6 +136,7 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 
     private fun divideWebtoonByDay(){
         ViewPagerAdapter_webtoonByDay = ViewPagerAdapter2(this)
+
         vp_webtoonOfWeek.adapter = ViewPagerAdapter_webtoonByDay
 
         // 웹툰을 요일별로 나눌 탭 세팅
@@ -166,7 +168,7 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
                     var idx = tab_weekArray.indexOf(weekDay)
 
                     handler.postDelayed({
-                        tab_week.setScrollPosition(0, idx.toFloat(), true, true)
+                        tab_week.selectTab(tab_week.getTabAt(idx))
                     }, 0)
 
                     Log.d("tabSetting", "success $idx")

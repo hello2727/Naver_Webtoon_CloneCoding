@@ -66,30 +66,6 @@
                 app:tabSelectedTextColor="#ffffff"
                 app:tabBackground="@drawable/tab_background"
                 app:tabIndicatorColor="#00ff0000" />
-<!--            <TabHost-->
-<!--                android:id="@+id/tab_week"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                app:tabMaxWidth="45dp"-->
-<!--                app:tabMode="scrollable"-->
-<!--                app:tabSelectedTextColor="#ffffff"-->
-<!--                app:tabBackground="@drawable/tab_background"-->
-<!--                app:tabIndicatorColor="#00ff0000">-->
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:orientation="vertical">-->
-<!--                    <TabWidget-->
-<!--                        android:id="@+id/tabs"-->
-<!--                        android:showDividers="none"-->
-<!--                        android:orientation="horizontal"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content" />-->
-<!--                    <FrameLayout-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"/>-->
-<!--                </LinearLayout>-->
-<!--            </TabHost>-->
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vp_webtoonOfWeek"
                 android:layout_width="match_parent"
