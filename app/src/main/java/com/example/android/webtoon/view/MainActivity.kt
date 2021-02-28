@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         // 두번 눌러 뒤로가기 종료
         if(0 <= gapTime && 2000 >= gapTime){
-            super.onBackPressed()
+            finish()
         }else{
             backBtnTime = curTime
             Toast.makeText(this, "'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()

@@ -1,5 +1,6 @@
 package com.example.android.webtoon.view
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TabHost
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -34,8 +36,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
-//    private lateinit var callback: OnBackPressedCallback
-
     private lateinit var vp_recommendedWebtoon: ViewPager2
     private lateinit var webtoonAdvertisementViewPagerAdapter: WebtoonAdvertisementViewPagerAdapter
     private lateinit var webtoonAdvertisementViewModel: WebtoonAdvertisement
@@ -46,9 +46,7 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
     private lateinit var ViewPagerAdapter_webtoonByDay: ViewPagerAdapter2
     private var tab_weekArray = arrayOf("신작","월","화","수","목","금","토","일","완결")
 
-    //    private var webtoonUrl = "https://comic.naver.com/index.nhn";
-    //    private lateinit var elements: Elements
-    //    private var imgPath = arrayOfNulls<String>(10)
+    private lateinit var callback: OnBackPressedCallback
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -63,7 +61,6 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
         setThumbNailBanner()
         // 웹툰을 요일별로 나누기
         divideWebtoonByDay()
-////        setWebtoonItem()
 
         return rootView
     }
@@ -180,39 +177,6 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
         }
     }
 
-//    private fun setWebtoonItem() {
-//        lifecycleScope.launch {
-//            var idx: Int = 0
-//            try{
-//                var rawData = Jsoup.connect(webtoonUrl).get();
-//                elements = rawData.select("html body div#wrap.end_page div.mainTopArea div#mainNavi.main_spot div.webtoon_area div.webtoon_lst div.lst_area ul#comicList li a.item span.bigimg");
-//                for(e in elements){
-//                    if(idx > 9) {
-//                        break
-//                   }
-//
-//                    Log.d("확인", e.text())
-//
-//                    imgPath[idx] = e.text()
-//                    idx++
-//                }
-//
-////                var doc = Jsoup.connect(webtoonUrl).get()
-////                elements = doc.select("div.lst_area ul li a span.bigimg")
-////                for(e in elements) {
-////                    if(idx > 9) {
-////                        break
-////                    }
-////
-////                    imgPath[idx] = e.text()
-////                    idx++
-////                }
-//            } catch (e : Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
-
     // 웹툰 썸네일 배너 클릭했을 때
     override fun onRecommendedItemClicked(recommendedItem: RecommendedItem) {
         TODO("Not yet implemented")
@@ -220,6 +184,17 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 
     override fun onClick(p0: View?) {
 
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // 뒤로가기
+        callback = object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     override fun onResume() {
@@ -232,20 +207,11 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
         isRunning = false
     }
 
-//    /* 뒤로가기 버튼 이벤트 처리 */
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        callback = object : OnBackPressedCallback(true){
-//            override fun handleOnBackPressed() {
-//
-//            }
-//        }
-//        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-//    }
-//    override fun onDetach() {
-//        super.onDetach()
-//        callback.remove()
-//    }
+    override fun onDetach() {
+        super.onDetach()
+        // 뒤로가기
+        callback.remove()
+    }
 }
 
 class ViewPagerAdapter2(fa: Fragment): FragmentStateAdapter(fa){
