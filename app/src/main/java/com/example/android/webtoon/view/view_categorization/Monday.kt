@@ -14,6 +14,9 @@ import com.example.android.webtoon.R
 import com.example.android.webtoon.view.adapter.CategoryAdapter
 import com.example.android.webtoon.model.ListItem
 import com.example.android.webtoon.view.deepWebtoonActivity
+import org.jetbrains.anko.doAsync
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,17 +47,24 @@ class Monday : Fragment() {
     }
 
     private fun getListOfWebtoonsByDay(){
-        //실시간 요일 가져오기
-        var currentTime : Date = Calendar.getInstance().time
-        var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
+        doAsync {
+            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
 
-        Log.d("오늘의 요일은?: ", weekDay)
+            var days : Elements = document.select("div.col_inner h4 span")
+            var thumbnail : Elements = document.select("")
+            var title : Elements = document.select("")
+            var rating : Elements = document.select("")
+            var ing : Elements = document.select("")
+            var author : Elements = document.select("")
+        }
     }
 
     private fun setListOfWebtoonsByDay(){
         val rvAdapter = CategoryAdapter(context, webtoonList) {ListItem ->
             /* 아이템 클릭하면 웹툰 회차 나옴 */
             activity?.let {
+                // let() 함수는 자신을 호출한 객체를 매개변수로 전달받은 람다 함수에 매개 변수로 전달하는 함수입니다.
+                // let() 함수를 사용하면 불필요한 변수 선언을 방지할 수 있습니다.
                 val intent = Intent(context, deepWebtoonActivity::class.java)
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

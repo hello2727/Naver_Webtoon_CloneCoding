@@ -166,10 +166,9 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
                         tab_week.selectTab(tab_week.getTabAt(idx))
                     }, 0)
 
-                    Log.d("tabSetting", "success $idx")
+                    Log.d("tabSetting", "success")
                     break
                 }
-                Log.d("!요일", "$day $weekDay")
             }
             ViewPagerAdapter_webtoonByDay
         }
