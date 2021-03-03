@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
 import com.example.android.webtoon.model.ListItem
 
-class CategoryAdapter(val context: Context?, val webtoonList: ArrayList<ListItem>, val itemClick: (ListItem) -> Unit) : RecyclerView.Adapter<CategoryAdapter.Holder>() {
+class ModayCategoryAdapter(val context: Context?, val webtoonList: ArrayList<ListItem>, val itemClick: (ListItem) -> Unit) : RecyclerView.Adapter<ModayCategoryAdapter.Holder>() {
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         // create a new view
