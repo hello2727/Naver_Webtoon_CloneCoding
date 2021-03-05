@@ -2,9 +2,6 @@ package com.example.android.webtoon.view
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,9 +24,6 @@ import kotlinx.android.synthetic.main.fragment_init_screen.*
 import kotlinx.android.synthetic.main.item_layout_recommended.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.jetbrains.anko.doAsync
-import org.jsoup.Jsoup
-import org.jsoup.select.Elements
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -147,31 +141,13 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
     }
 
     private fun getDaysAndFixedTodayTab(){
-        doAsync {
-            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekday.nhn").get()
+        //실시간 요일 가져오기
+        var currentTime : Date = Calendar.getInstance().time
+        var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
 
-            var days : Elements = document.select("div.col_inner h4 span")
-            val handler : Handler = Handler(Looper.getMainLooper())
-            for(e in days){
-                var day = e.toString().substring(6, 7) //요일 추출
-                //실시간 요일 가져오기
-                var currentTime : Date = Calendar.getInstance().time
-                var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
+        var idx = tab_weekArray.indexOf(weekDay)
 
-                //앱 실행시 현재 요일 탭 선택
-                if(weekDay.equals(day)){
-                    var idx = tab_weekArray.indexOf(weekDay)
-
-                    handler.postDelayed({
-                        tab_week.selectTab(tab_week.getTabAt(idx))
-                    }, 0)
-
-                    Log.d("tabSetting", "success")
-                    break
-                }
-            }
-            ViewPagerAdapter_webtoonByDay
-        }
+        tab_week.selectTab(tab_week.getTabAt(idx))
     }
 
     // 웹툰 썸네일 배너 클릭했을 때

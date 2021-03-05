@@ -2,7 +2,8 @@ package com.example.android.webtoon.view.view_categorization
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,18 +18,14 @@ import com.example.android.webtoon.view.deepWebtoonActivity
 import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Monday : Fragment() {
     private lateinit var rv_listOfWebtoon : RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
-    var webtoonList = arrayListOf(
-        ListItem("", "소녀의 세계", "9.97", "연재", "모랑지"),
-        ListItem("", "유일무이 로맨스", "9.98", "연재", "두부"),
-        ListItem("", "인생존망", "9.82", "연재", "박태준/전선욱"),
-        ListItem("", "칼가는 소녀", "9.97", "연재", "오리"),
-        ListItem("", "백수세끼", "9.86", "연재", "치즈"),
-        ListItem("", "인간의 온도", "9.90", "휴재", "이재익/양세준")
-    )
+    val webtoonList : ArrayList<ListItem> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var rootView = inflater.inflate(R.layout.fragment_monday, container, false)
@@ -48,19 +45,27 @@ class Monday : Fragment() {
         doAsync {
             val document = Jsoup.connect("https://comic.naver.com/webtoon/weekdayList.nhn?week=mon").get()
 
-            var thumbnails : Elements = document.select("div.thumb a img")
-            var ratings : Elements = document.select("div.rating_type strong")
-//            var ing : Elements = document.select("")
-//            var author : Elements = document.select("")
+            //실시간 요일 가져오기
+            var currentTime : Date = Calendar.getInstance().time
+            var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
 
-            //썸네일 주소 가져오기
-            for((idx, elem) in thumbnails.withIndex()){
-                var title = elem.attr("title")
-                var rating = ratings[idx].toString().substring(8, 12)
-                Log.e("썸네일 주소", "${elem.attr("src")}")
-                Log.e("웹툰 제목", "${title}")
-                Log.e("평점", "$rating")
+            var webtoons : Elements = document.select("ul.img_list li")
+
+            for(webtoon in webtoons){
+                var thumbnail = webtoon.select("div.thumb a img").attr("src")
+                var title = webtoon.select("div.thumb a img").attr("title")
+                var rating = webtoon.select("div.rating_type strong").text()
+                var upOrPause = webtoon.select("em.ico_break").text()
+                var author = webtoon.select("dd.desc a").text()
+                var new = webtoon.select("span.ico_new2").text()
+                webtoonList.add(ListItem(thumbnail, title, rating, upOrPause, author, new))
             }
+
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                // 가져온 웹툰 목록 UI에 세팅하기
+                setListOfWebtoonsByDay()
+            }, 0)
         }
     }
 

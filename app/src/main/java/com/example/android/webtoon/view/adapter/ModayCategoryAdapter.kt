@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.android.webtoon.R
 import com.example.android.webtoon.model.ListItem
 
@@ -42,16 +43,29 @@ class ModayCategoryAdapter(val context: Context?, val webtoonList: ArrayList<Lis
 
         fun bind (list: ListItem, context: Context) {
             if (list.iv_preview != "") {
-                val resourceId = context.resources.getIdentifier(list.iv_preview, "drawable", context.packageName)
-                iv_preview?.setImageResource(resourceId)
+                Glide.with(context)
+                    .load(list.iv_preview)
+                    .into(iv_preview)
             } else {
-                iv_preview?.setImageResource(R.drawable.n)
+                Glide.with(context)
+                    .load(R.drawable.n)
+                    .into(iv_preview)
             }
 
             if (list.iv_upOrpause == "휴재") {
-                iv_upOrpause?.setImageResource(R.drawable.pause)
+                Glide.with(context)
+                    .load(R.drawable.pause)
+                    .into(iv_upOrpause)
             } else {
-                iv_upOrpause?.setImageResource(R.drawable.up)
+                Glide.with(context)
+                    .load(R.drawable.up)
+                    .into(iv_upOrpause)
+            }
+
+            if(list.tv_isNew == "NEW"){
+
+            }else{
+
             }
 
             tv_title?.text = list.tv_title

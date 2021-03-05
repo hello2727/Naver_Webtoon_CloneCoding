@@ -7,17 +7,17 @@
 
     <ImageView
         android:id="@+id/iv_preview"
-        android:layout_width="110dp"
+        android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:src="@drawable/n"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:src="@drawable/n" />
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
         android:layout_marginStart="10dp"
+        android:layout_marginBottom="2dp"
         android:text="웹툰 제목"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -48,13 +48,14 @@
             android:layout_width="25dp"
             android:layout_height="22dp"
             app:srcCompat="@drawable/up" />
+
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_date"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:textSize="12sp"
-        android:text="작가" />
+        android:text="작가"
+        android:textSize="12sp" />
 </LinearLayout>
