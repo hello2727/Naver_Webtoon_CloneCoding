@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class Monday : Fragment() {
+    val WEEKDAY : String = "월"
+
     private lateinit var rv_listOfWebtoon : RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
     val webtoonList : ArrayList<ListItem> = arrayListOf()
@@ -47,7 +50,13 @@ class Monday : Fragment() {
 
             //실시간 요일 가져오기
             var currentTime : Date = Calendar.getInstance().time
-            var weekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
+            var currentWeekDay : String = SimpleDateFormat("EE", Locale.getDefault()).format(currentTime)
+            var isToday : Boolean
+            if(currentWeekDay == WEEKDAY){
+                isToday = true
+            }else{
+                isToday = false
+            }
 
             var webtoons : Elements = document.select("ul.img_list li")
 
@@ -56,9 +65,10 @@ class Monday : Fragment() {
                 var title = webtoon.select("div.thumb a img").attr("title")
                 var rating = webtoon.select("div.rating_type strong").text()
                 var upOrPause = webtoon.select("em.ico_break").text()
+
                 var author = webtoon.select("dd.desc a").text()
                 var new = webtoon.select("span.ico_new2").text()
-                webtoonList.add(ListItem(thumbnail, title, rating, upOrPause, author, new))
+                webtoonList.add(ListItem(thumbnail, title, rating, upOrPause, author, new, isToday))
             }
 
             val handler = Handler(Looper.getMainLooper())

@@ -40,6 +40,7 @@ class ModayCategoryAdapter(val context: Context?, val webtoonList: ArrayList<Lis
         val tv_star = itemView?.findViewById<TextView>(R.id.tv_star)
         val iv_upOrpause = itemView?.findViewById<ImageView>(R.id.iv_upOrpause)
         val tv_author = itemView?.findViewById<TextView>(R.id.tv_date)
+        val iv_isNew = itemView?.findViewById<ImageView>(R.id.iv_isNew)
 
         fun bind (list: ListItem, context: Context) {
             if (list.iv_preview != "") {
@@ -53,19 +54,25 @@ class ModayCategoryAdapter(val context: Context?, val webtoonList: ArrayList<Lis
             }
 
             if (list.iv_upOrpause == "휴재") {
+                iv_upOrpause.visibility = View.VISIBLE
+
                 Glide.with(context)
                     .load(R.drawable.pause)
                     .into(iv_upOrpause)
-            } else {
+            } else if(list.check_isToday == true){
+                iv_upOrpause.visibility = View.VISIBLE
+
                 Glide.with(context)
                     .load(R.drawable.up)
                     .into(iv_upOrpause)
+            }else{
+                iv_upOrpause.visibility = View.GONE
             }
 
             if(list.tv_isNew == "NEW"){
-
+                iv_isNew.visibility = View.VISIBLE
             }else{
-
+                iv_isNew.visibility = View.INVISIBLE
             }
 
             tv_title?.text = list.tv_title
