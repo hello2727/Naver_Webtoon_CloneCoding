@@ -128,6 +128,10 @@ class initScreenFragment : Fragment(), View.OnClickListener, Interaction {
 
         vp_webtoonOfWeek.adapter = ViewPagerAdapter_webtoonByDay
 
+        // Fragment no longer exists for key f#4: unique id daefca9f-a444-4dgf-9926-fde15c131612 에러 해결
+        vp_webtoonOfWeek.isSaveEnabled = false
+        vp_webtoonOfWeek.isSaveFromParentEnabled = false
+
         // 웹툰을 요일별로 나눌 탭 세팅
         setWeekDayTab()
         // 1.네이버웹툰 페이지에서 요일 가져오기 2.현재요일에 맞게 탭에 고정

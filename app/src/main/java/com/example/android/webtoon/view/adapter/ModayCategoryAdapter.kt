@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.android.webtoon.R
-import com.example.android.webtoon.model.ListItem
+import com.example.android.webtoon.model.remote.ListItem
 
 class ModayCategoryAdapter(val context: Context?, val webtoonList: ArrayList<ListItem>, val itemClick: (ListItem) -> Unit) : RecyclerView.Adapter<ModayCategoryAdapter.Holder>() {
     // Create new views (invoked by the layout manager)
