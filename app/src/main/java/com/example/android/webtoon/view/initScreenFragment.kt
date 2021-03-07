@@ -18,6 +18,7 @@ import com.example.android.webtoon.model.remote.RecommendedItem
 import com.example.android.webtoon.view.adapter.Interface.Interaction
 import com.example.android.webtoon.view.adapter.WebtoonAdvertisementViewPagerAdapter
 import com.example.android.webtoon.view.view_categorization.Monday
+import com.example.android.webtoon.view.view_categorization.Tuesday
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.fragment_init_screen.*
@@ -196,6 +197,7 @@ class ViewPagerAdapter2(fa: Fragment): FragmentStateAdapter(fa){
     override fun createFragment(position: Int): Fragment {
         return when(position){
             1 -> Monday()
+            2 -> Tuesday()
             else -> Monday()
         }
     }
