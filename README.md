@@ -18,7 +18,7 @@
   <img width="200", src="https://user-images.githubusercontent.com/43267195/110272880-9a351680-800e-11eb-954e-2664d85db5bf.PNG">
 </div>
 
-- 1) 웹툰 썸네일 배너 자동스크롤 및 손으로 스크롤 기능  2) 요일별 웹툰 목록 구성(앱 실행시 현재 요일에 맞는 요일탭 고정 + 컷툰/휴재 상태 표시)
+- 1)웹툰 썸네일 배너 자동스크롤 및 손으로 스크롤 기능  2)요일별 웹툰 목록 구성(앱 실행시 현재 요일에 맞는 요일탭 고정 + 컷툰/휴재 상태 표시)
 <div>
   <img width="200", src="https://user-images.githubusercontent.com/43267195/110273049-0d3e8d00-800f-11eb-9cad-b8f705184187.gif">
   <img width="200", src="https://user-images.githubusercontent.com/43267195/110273300-a53c7680-800f-11eb-9627-901262e9c44d.gif">
