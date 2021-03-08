@@ -53,10 +53,10 @@ class Finish : Fragment() {
                 var title = webtoon.select("div.thumb a img").attr("title")
                 var rating = webtoon.select("div.rating_type strong").text()
                 var upOrPause = webtoon.select("em.ico_break").text()
-
                 var author = webtoon.select("dd.desc a").text()
                 var new = webtoon.select("span.ico_new2").text()
-                webtoonList.add(ListItem(thumbnail, title, rating, upOrPause, author, new, false))
+                var cutToon = webtoon.select("span.ico_cut").text()
+                webtoonList.add(ListItem(thumbnail, title, rating, upOrPause, author, new, false, cutToon))
             }
 
             val handler = Handler(Looper.getMainLooper())

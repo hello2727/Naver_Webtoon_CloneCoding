@@ -59,7 +59,13 @@ class WebtoonsByDayAdapter(val context: Context?, val webtoonList: ArrayList<Lis
                 Glide.with(context)
                     .load(R.drawable.pause)
                     .into(iv_upOrpause)
-            } else if(list.check_isToday == true){
+            } else if(list.tv_cutToon == "컷툰"){
+                iv_upOrpause.visibility = View.VISIBLE
+
+                Glide.with(context)
+                    .load(R.drawable.cuttoon)
+                    .into(iv_upOrpause)
+            }else if(list.check_isToday == true){
                 iv_upOrpause.visibility = View.VISIBLE
 
                 Glide.with(context)
