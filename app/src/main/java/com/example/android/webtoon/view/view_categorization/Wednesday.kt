@@ -22,18 +22,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class Tuesday : Fragment() {
-    val WEEKDAY : String = "화"
+class Wednesday : Fragment() {
+    val WEEKDAY : String = "수"
 
-    private lateinit var rv_tuesday : RecyclerView
+    private lateinit var rv_wednesday : RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
     val webtoonList : ArrayList<ListItem> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var rootView =  inflater.inflate(R.layout.fragment_tuesday, container, false)
+        var rootView =  inflater.inflate(R.layout.fragment_wednesday, container, false)
 
         //초기화
-        rv_tuesday = rootView.findViewById(R.id.rv_tuesday)
+        rv_wednesday = rootView.findViewById(R.id.rv_wednesday)
 
         // 요일별로 나누어 웹툰 목록 가져오기
         getListOfWebtoonsByDay()
@@ -45,7 +45,7 @@ class Tuesday : Fragment() {
 
     private fun getListOfWebtoonsByDay() {
         doAsync {
-            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekdayList.nhn?week=tue").get()
+            val document = Jsoup.connect("https://comic.naver.com/webtoon/weekdayList.nhn?week=wed").get()
 
             //실시간 요일 가져오기
             var currentTime : Date = Calendar.getInstance().time
@@ -91,7 +91,7 @@ class Tuesday : Fragment() {
         }
         rvManager = GridLayoutManager(context, 3)
 
-        rv_tuesday.apply {
+        rv_wednesday.apply {
             // apply 의 블록에서는 오직 프로퍼티 만 사용합니다!
             // use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView

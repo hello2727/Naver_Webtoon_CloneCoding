@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
-import com.example.android.webtoon.view.adapter.ModayCategoryAdapter
+import com.example.android.webtoon.view.adapter.WebtoonsByDayAdapter
 import com.example.android.webtoon.model.remote.ListItem
 import com.example.android.webtoon.view.deepWebtoonActivity
 import org.jetbrains.anko.doAsync
@@ -79,7 +79,7 @@ class Monday : Fragment() {
     }
 
     private fun setListOfWebtoonsByDay(){
-        val rvAdapter = ModayCategoryAdapter(context, webtoonList) { ListItem ->
+        val rvAdapter = WebtoonsByDayAdapter(context, webtoonList) { ListItem ->
             /* 아이템 클릭하면 웹툰 회차 나옴 */
             activity?.let {
                 // let() 함수는 자신을 호출한 객체를 매개변수로 전달받은 람다 함수에 매개 변수로 전달하는 함수입니다.
