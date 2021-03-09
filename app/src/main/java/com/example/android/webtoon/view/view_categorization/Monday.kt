@@ -68,7 +68,8 @@ class Monday : Fragment() {
                 var author = webtoon.select("dd.desc a").text()
                 var new = webtoon.select("span.ico_new2").text()
                 var cutToon = webtoon.select("span.ico_cut").text()
-                webtoonList.add(ListItem(thumbnail, title, rating, upOrPause, author, new, isToday, cutToon))
+                var episodeLink = webtoon.select("div.thumb a").attr("href")
+                webtoonList.add(ListItem(thumbnail, title, rating, upOrPause, author, new, isToday, cutToon, episodeLink))
             }
 
             val handler = Handler(Looper.getMainLooper())
@@ -86,7 +87,7 @@ class Monday : Fragment() {
                 // let() 함수는 자신을 호출한 객체를 매개변수로 전달받은 람다 함수에 매개 변수로 전달하는 함수입니다.
                 // let() 함수를 사용하면 불필요한 변수 선언을 방지할 수 있습니다.
                 val intent = Intent(context, deepWebtoonActivity::class.java)
-                intent.putExtra("webtoonTitle", ListItem.tv_title)
+                intent.putExtra("episodeLink", ListItem.tv_episodeLink)
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }

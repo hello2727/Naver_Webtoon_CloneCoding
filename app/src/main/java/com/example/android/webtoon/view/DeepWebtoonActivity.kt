@@ -10,11 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
 import com.example.android.webtoon.view.adapter.deepWebtoonAdapter
 import com.example.android.webtoon.model.EpisodeList
+import org.jetbrains.anko.doAsync
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 
 class deepWebtoonActivity : AppCompatActivity() {
+    var URL : String = "https://comic.naver.com"
+
     private lateinit var rv_listOfEpisode : RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
-    private lateinit var webtoonTitle : String
+    private lateinit var episodeLink : String
 
     var deepwebtoonList = arrayListOf<EpisodeList>(
         EpisodeList("", "아침을 건강하게", "9.97", "20.10.28"),
@@ -31,12 +36,39 @@ class deepWebtoonActivity : AppCompatActivity() {
         setContentView(R.layout.activity_deep_webtoon)
 
         // 초기화
-        rv_listOfEpisode = findViewById<RecyclerView>(R.id.rv_listOfEpisode)
+        rv_listOfEpisode = findViewById(R.id.rv_listOfEpisode)
 
-        // 클릭한 웹툰의 에피소드 목록 가져오기 + 클릭 웹툰 에피소드 내용 보는 액티비티 전환 이벤트 설정
-        setEpisodesOfTheWebtoon()
         // 요일별 웹툰목록 보여주는 액티비티에서 받은 데이터 값 가져오기
         getWebtoonInfo()
+        // 클릭한 웹툰의 에피소드 목록 가져오기
+        getEpisodesOfTheWebtoon()
+        // 가져온 에피소드 목록 UI에 세팅하기 + 클릭 웹툰 에피소드 내용 보는 액티비티 전환 이벤트 설정
+        setEpisodesOfTheWebtoon()
+    }
+
+    private fun getWebtoonInfo(){
+        if(intent.hasExtra("episodeLink")){
+            episodeLink = intent.getStringExtra("episodeLink")
+            Log.d("에피소드 링크", "$episodeLink")
+        }else{
+            Log.d("에피소드 링크", "전달된 데이터가 없습니다.")
+        }
+    }
+
+    private fun getEpisodesOfTheWebtoon(){
+        doAsync {
+            val document = Jsoup.connect(URL+episodeLink).get()
+
+            var episodes : Elements = document.select("div.webtoon")
+
+            for(episode in episodes){
+                var img = episode.select("table.viewList tbody tr td a img").attr("src")
+                var title = episode.select("table.viewList tbody tr td a img").attr("title")
+                var rating = episode.select("div.rating_type strong").text()
+                var updateDay = episode.select("td.num").text()
+                Log.d("에피소드 정보", "$img $title $rating $updateDay")
+            }
+        }
     }
 
     private fun setEpisodesOfTheWebtoon(){
@@ -59,15 +91,6 @@ class deepWebtoonActivity : AppCompatActivity() {
             adapter = rvAdapter
 
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-        }
-    }
-
-    private fun getWebtoonInfo(){
-        if(intent.hasExtra("webtoonTitle")){
-            webtoonTitle = intent.getStringExtra("webtoonTitle")
-            Log.d("제목", "$webtoonTitle")
-        }else{
-            Log.d("제목", "전달된 데이터가 없습니다.")
         }
     }
 
