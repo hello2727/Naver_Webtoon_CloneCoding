@@ -12,16 +12,16 @@
 
 결과물
 -----------------
-### 하단 '웹툰' 탭 화면
+### 하단의 '웹툰' 탭을 눌렀을 때 나타나는 view
 - 백버튼 눌렀을 때
 <div>
-  <img width="200", src="https://user-images.githubusercontent.com/43267195/98893510-e1d6e600-24e5-11eb-82a1-2e771bf2309f.jpg">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/110272880-9a351680-800e-11eb-954e-2664d85db5bf.PNG">
 </div>
 
-- 앱 실행시 스플래시 화면을 제외하고 처음으로 보이는 화면
+- 1)웹툰 썸네일 배너 자동스크롤 및 손으로 스크롤 기능  2)요일별 웹툰 목록 구성(앱 실행시 현재 요일에 맞는 요일탭 고정 + 컷툰/휴재 상태 표시)
 <div>
-  <img width="200", src="https://user-images.githubusercontent.com/43267195/87907401-864c9c80-ca9f-11ea-8145-bd987212c473.gif">
-  <img width="200", src="https://user-images.githubusercontent.com/43267195/98892963-d0d9a500-24e4-11eb-8769-25b10e869ffc.jpg">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/110273049-0d3e8d00-800f-11eb-9cad-b8f705184187.gif">
+  <img width="200", src="https://user-images.githubusercontent.com/43267195/110273300-a53c7680-800f-11eb-9627-901262e9c44d.gif">
 </div>
 
 - 요일별 카테고리 웹툰 목록을 눌렀을 때 보여지는 화면(고른 웹툰의 목차리스트)
