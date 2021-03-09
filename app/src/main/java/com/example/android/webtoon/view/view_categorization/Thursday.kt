@@ -84,6 +84,7 @@ class Thursday : Fragment() {
                 // let() 함수는 자신을 호출한 객체를 매개변수로 전달받은 람다 함수에 매개 변수로 전달하는 함수입니다.
                 // let() 함수를 사용하면 불필요한 변수 선언을 방지할 수 있습니다.
                 val intent = Intent(context, deepWebtoonActivity::class.java)
+                intent.putExtra("webtoonTitle", ListItem.tv_title)
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }

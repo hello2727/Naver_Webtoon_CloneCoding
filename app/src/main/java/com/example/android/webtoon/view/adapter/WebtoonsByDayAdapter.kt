@@ -29,8 +29,10 @@ class WebtoonsByDayAdapter(val context: Context?, val webtoonList: ArrayList<Lis
     override fun onBindViewHolder(holder: Holder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
+        val item = webtoonList[position]
+
         if (context != null) {
-            holder?.bind(webtoonList[position], context)
+            holder?.bind(item, context)
         }
     }
 

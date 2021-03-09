@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,7 +36,7 @@ class Monday : Fragment() {
         // 초기화
         rv_listOfWebtoon = rootView.findViewById(R.id.rv_listOfWebtoon)
 
-        // 요일별로 나누어 웹툰 목록 가져오기
+        // 요일별로 나누어 웹툰 목록 가져오기 + 클릭 웹툰 에피소드 목록 보는 액티비티 전환 이벤트 설정
         getListOfWebtoonsByDay()
         // 가져온 웹툰 목록 UI에 세팅하기
         setListOfWebtoonsByDay()
@@ -85,6 +86,7 @@ class Monday : Fragment() {
                 // let() 함수는 자신을 호출한 객체를 매개변수로 전달받은 람다 함수에 매개 변수로 전달하는 함수입니다.
                 // let() 함수를 사용하면 불필요한 변수 선언을 방지할 수 있습니다.
                 val intent = Intent(context, deepWebtoonActivity::class.java)
+                intent.putExtra("webtoonTitle", ListItem.tv_title)
                 startActivity(intent)
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
