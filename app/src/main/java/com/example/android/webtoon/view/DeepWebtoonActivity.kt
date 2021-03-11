@@ -21,7 +21,7 @@ class deepWebtoonActivity : AppCompatActivity() {
     private lateinit var rvManager: RecyclerView.LayoutManager
     private lateinit var episodeLink : String
 
-    var deepwebtoonList = arrayListOf<EpisodeList>(
+    var deepwebtoonList = arrayListOf(
         EpisodeList("", "아침을 건강하게", "9.97", "20.10.28"),
         EpisodeList("", "퇴근시간 교대역 환승하기", "9.97", "20.10.28"),
         EpisodeList("", "게스트하우스", "9.97", "20.10.28"),
@@ -57,16 +57,21 @@ class deepWebtoonActivity : AppCompatActivity() {
 
     private fun getEpisodesOfTheWebtoon(){
         doAsync {
-            val document = Jsoup.connect(URL+episodeLink).get()
+            //일단은 여기까지 가져오기
+            var pageCnt = 1
+            while(true){
+                val document = Jsoup.connect(URL+episodeLink+"&page="+pageCnt).get()
 
-            var episodes : Elements = document.select("div.webtoon")
+                var episodes : Elements = document.select("div.webtoon")
+                for(episode in episodes){
+                    var img = episode.select("table.viewList tbody tr td a img").attr("src")
+                    var title = episode.select("table.viewList tbody tr td a img").attr("title")
+                    var rating = episode.select("div.rating_type strong").text()
+                    var updateDay = episode.select("td.num").text()
+                    Log.d("에피소드 정보", "$img $title $rating $updateDay")
+                }
 
-            for(episode in episodes){
-                var img = episode.select("table.viewList tbody tr td a img").attr("src")
-                var title = episode.select("table.viewList tbody tr td a img").attr("title")
-                var rating = episode.select("div.rating_type strong").text()
-                var updateDay = episode.select("td.num").text()
-                Log.d("에피소드 정보", "$img $title $rating $updateDay")
+                pageCnt++
             }
         }
     }
