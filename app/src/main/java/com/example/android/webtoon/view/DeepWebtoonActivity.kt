@@ -62,17 +62,31 @@ class deepWebtoonActivity : AppCompatActivity() {
             while(true){
                 val document = Jsoup.connect(URL+episodeLink+"&page="+pageCnt).get()
 
-                var episodes : Elements = document.select("div.webtoon")
+                var theEnd = false
+                var episodes : Elements = document.select("table.viewList")
                 for(episode in episodes){
-                    var img = episode.select("table.viewList tbody tr td a img").attr("src")
-                    var title = episode.select("table.viewList tbody tr td a img").attr("title")
-                    var rating = episode.select("div.rating_type strong").text()
-                    var updateDay = episode.select("td.num").text()
-                    Log.d("에피소드 정보", "$img $title $rating $updateDay")
+                    for(i in 0..9){
+                        var img = episode.select("tbody tr td a img").get(i).attr("src")
+                        var title = episode.select("td.title a").get(i).text()
+                        var rating = episode.select("div.rating_type strong").get(i).text()
+                        var updateDay = episode.select("td.num").get(i).text()
+
+                        if(deepwebtoonList.contains(EpisodeList(img, title, rating, updateDay))){
+                            theEnd = true
+                            break
+                        }
+
+                        deepwebtoonList.add(EpisodeList(img, title, rating, updateDay))
+                        Log.d("에피소드 정보", "$img $title $rating $updateDay")
+                    }
                 }
+
+                if(theEnd) break
 
                 pageCnt++
             }
+
+            
         }
     }
 
