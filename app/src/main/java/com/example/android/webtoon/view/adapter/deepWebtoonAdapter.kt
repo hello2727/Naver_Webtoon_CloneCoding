@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.android.webtoon.R
 import com.example.android.webtoon.model.EpisodeList
 
@@ -41,8 +42,9 @@ class deepWebtoonAdapter(val context: Context?, val deepWebtoonList: ArrayList<E
 
         fun bind (list: EpisodeList, context: Context) {
             if (list.iv_preview != "") {
-                val resourceId = context.resources.getIdentifier(list.iv_preview, "drawable", context.packageName)
-                iv_preview?.setImageResource(resourceId)
+                Glide.with(context)
+                    .load(list.iv_preview)
+                    .into(iv_preview)
             } else {
                 iv_preview?.setImageResource(R.drawable.n)
             }

@@ -27,7 +27,7 @@ class Wednesday : Fragment() {
 
     private lateinit var rv_wednesday : RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
-    val webtoonList : ArrayList<ListItem> = arrayListOf()
+    var webtoonList : ArrayList<ListItem> = arrayListOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var rootView =  inflater.inflate(R.layout.fragment_wednesday, container, false)

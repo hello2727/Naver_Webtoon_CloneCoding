@@ -3,6 +3,8 @@ package com.example.android.webtoon.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,15 +23,7 @@ class deepWebtoonActivity : AppCompatActivity() {
     private lateinit var rvManager: RecyclerView.LayoutManager
     private lateinit var episodeLink : String
 
-    var deepwebtoonList = arrayListOf(
-        EpisodeList("", "아침을 건강하게", "9.97", "20.10.28"),
-        EpisodeList("", "퇴근시간 교대역 환승하기", "9.97", "20.10.28"),
-        EpisodeList("", "게스트하우스", "9.97", "20.10.28"),
-        EpisodeList("", "공간활용", "9.97", "20.10.28"),
-        EpisodeList("", "아빠의 생일", "9.97", "20.10.28"),
-        EpisodeList("", "반찬", "9.97", "20.10.28"),
-        EpisodeList("", "시내버스 적응기", "9.97", "20.10.28")
-    )
+    var deepwebtoonList : ArrayList<EpisodeList> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +80,11 @@ class deepWebtoonActivity : AppCompatActivity() {
                 pageCnt++
             }
 
-            
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                // 가져온 에피소드 목록 UI에 세팅하기 + 클릭 웹툰 에피소드 내용 보는 액티비티 전환 이벤트 설정
+                setEpisodesOfTheWebtoon()
+            }, 0)
         }
     }
 
@@ -116,6 +114,14 @@ class deepWebtoonActivity : AppCompatActivity() {
     /* 뒤로가기 버튼 이벤트 */
     override fun onBackPressed() {
         super.onBackPressed()
+
+        deepwebtoonList.clear()
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            // 가져온 에피소드 목록 UI에 세팅하기 + 클릭 웹툰 에피소드 내용 보는 액티비티 전환 이벤트 설정
+            setEpisodesOfTheWebtoon()
+        }, 0)
+        
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 }
