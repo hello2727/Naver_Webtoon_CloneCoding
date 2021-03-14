@@ -55,23 +55,21 @@ class deepWebtoonActivity : AppCompatActivity() {
             while(true){
                 val document = Jsoup.connect(URL+episodeLink+"&page="+pageCnt).get()
 
+                var episodes : Elements = document.select("table.viewList tr:gt(0)")
                 var theEnd = false
-                var episodes : Elements = document.select("table.viewList")
                 for(episode in episodes){
-                    for(i in 0..9){
-                        var img = episode.select("tbody tr td a img").get(i).attr("src")
-                        var title = episode.select("td.title a").get(i).text()
-                        var rating = episode.select("div.rating_type strong").get(i).text()
-                        var updateDay = episode.select("td.num").get(i).text()
+                    var img = episode.select("td a img").attr("src")
+                    var title = episode.select("td.title a").text()
+                    var rating = episode.select("div.rating_type strong").text()
+                    var updateDay = episode.select("td.num").text()
 
-                        if(deepwebtoonList.contains(EpisodeList(img, title, rating, updateDay))){
-                            theEnd = true
-                            break
-                        }
-
-                        deepwebtoonList.add(EpisodeList(img, title, rating, updateDay))
-                        Log.d("에피소드 정보", "$img $title $rating $updateDay")
+                    Log.d("에피소드 정보", "$img $title $rating $updateDay")
+                    if(deepwebtoonList.contains(EpisodeList(img, title, rating, updateDay))){
+                        theEnd = true
+                        break
                     }
+
+                    deepwebtoonList.add(EpisodeList(img, title, rating, updateDay))
 
                     val handler = Handler(Looper.getMainLooper())
                     handler.postDelayed({
