@@ -37,6 +37,7 @@ class deepWebtoonAdapter(val context: Context?, val deepWebtoonList: ArrayList<E
     inner class Holder(itemView: View, itemClick: (EpisodeList) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val iv_preview = itemView?.findViewById<ImageView>(R.id.iv_preview)
         val tv_title = itemView?.findViewById<TextView>(R.id.tv_title)
+        val iv_starCnt = itemView?.findViewById<ImageView>(R.id.iv_starCnt)
         val tv_star = itemView?.findViewById<TextView>(R.id.tv_star)
         val tv_date = itemView?.findViewById<TextView>(R.id.tv_date)
 
@@ -50,6 +51,9 @@ class deepWebtoonAdapter(val context: Context?, val deepWebtoonList: ArrayList<E
             }
 
             tv_title?.text = list.tv_title
+            Glide.with(context)
+                .load(R.drawable.redstar)
+                .into(iv_starCnt)
             tv_star?.text = list.tv_star
             tv_date?.text = list.tv_date
 

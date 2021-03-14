@@ -51,7 +51,6 @@ class deepWebtoonActivity : AppCompatActivity() {
 
     private fun getEpisodesOfTheWebtoon(){
         doAsync {
-            //일단은 여기까지 가져오기
             var pageCnt = 1
             while(true){
                 val document = Jsoup.connect(URL+episodeLink+"&page="+pageCnt).get()
@@ -73,18 +72,18 @@ class deepWebtoonActivity : AppCompatActivity() {
                         deepwebtoonList.add(EpisodeList(img, title, rating, updateDay))
                         Log.d("에피소드 정보", "$img $title $rating $updateDay")
                     }
+
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed({
+                        // 에피소드 리스트 갱신
+                        setRenewEpisodesOfTheWebtoon()
+                    }, 0)
                 }
 
                 if(theEnd) break
 
                 pageCnt++
             }
-
-            val handler = Handler(Looper.getMainLooper())
-            handler.postDelayed({
-                // 가져온 에피소드 목록 UI에 세팅하기 + 클릭 웹툰 에피소드 내용 보는 액티비티 전환 이벤트 설정
-                setEpisodesOfTheWebtoon()
-            }, 0)
         }
     }
 
@@ -111,17 +110,18 @@ class deepWebtoonActivity : AppCompatActivity() {
         }
     }
 
+    private fun setRenewEpisodesOfTheWebtoon(){
+        val rvAdapter = deepWebtoonAdapter(applicationContext, deepwebtoonList){
+
+        }
+        rv_listOfEpisode.apply {
+            adapter = rvAdapter
+        }
+    }
+
     /* 뒤로가기 버튼 이벤트 */
     override fun onBackPressed() {
         super.onBackPressed()
-
-        deepwebtoonList.clear()
-        val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            // 가져온 에피소드 목록 UI에 세팅하기 + 클릭 웹툰 에피소드 내용 보는 액티비티 전환 이벤트 설정
-            setEpisodesOfTheWebtoon()
-        }, 0)
-        
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
     }
 }
