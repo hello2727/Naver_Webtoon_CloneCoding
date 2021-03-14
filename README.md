@@ -24,7 +24,7 @@
   <img width="200", src="https://user-images.githubusercontent.com/43267195/110273300-a53c7680-800f-11eb-9627-901262e9c44d.gif">
 </div>
 
-- 요일별 카테고리 웹툰 목록을 눌렀을 때 보여지는 화면(고른 웹툰의 목차리스트) -> Jsoup으로 웹툰 정보 
+- 요일별 카테고리 웹툰 목록을 눌렀을 때 보여지는 화면(고른 웹툰의 목차리스트) -> Jsoup으로 웹툰 정보 크롤링
 <div>
   <img width="200", src="https://user-images.githubusercontent.com/43267195/110915675-49e5ed80-835b-11eb-8402-89da3afbf263.gif">
   <img width="200", src="https://user-images.githubusercontent.com/43267195/98893008-e8b12900-24e4-11eb-9565-23c31f7becf8.jpg">
