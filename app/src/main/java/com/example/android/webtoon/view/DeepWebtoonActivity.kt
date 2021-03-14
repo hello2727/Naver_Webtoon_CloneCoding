@@ -111,9 +111,12 @@ class deepWebtoonActivity : AppCompatActivity() {
     }
 
     private fun setRenewEpisodesOfTheWebtoon(){
-        val rvAdapter = deepWebtoonAdapter(applicationContext, deepwebtoonList){
-
+        val rvAdapter = deepWebtoonAdapter(applicationContext, deepwebtoonList){ListItem ->
+            val intent = Intent(this, EpisodeActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
+        
         rv_listOfEpisode.apply {
             adapter = rvAdapter
         }
