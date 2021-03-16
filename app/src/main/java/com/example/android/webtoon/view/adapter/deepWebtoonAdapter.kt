@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.android.webtoon.R
-import com.example.android.webtoon.model.EpisodeList
+import com.example.android.webtoon.model.remote.EpisodeList
 
 class deepWebtoonAdapter(val context: Context?, val deepWebtoonList: ArrayList<EpisodeList>, val itemClick: (EpisodeList) -> Unit) : RecyclerView.Adapter<deepWebtoonAdapter.Holder>() {
     // Create new views (invoked by the layout manager)

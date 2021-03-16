@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
 import com.example.android.webtoon.view.adapter.deepWebtoonAdapter
-import com.example.android.webtoon.model.EpisodeList
+import com.example.android.webtoon.model.remote.EpisodeList
 import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
