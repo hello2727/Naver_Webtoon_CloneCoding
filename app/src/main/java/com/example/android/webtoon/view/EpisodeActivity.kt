@@ -2,15 +2,7 @@ package com.example.android.webtoon.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.view.*
-import android.widget.ScrollView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.android.webtoon.R
-import com.example.android.webtoon.view.adapter.EpisodeAdapter
-import com.example.android.webtoon.model.contentUnit
 
 class EpisodeActivity : AppCompatActivity() {
     lateinit var roundN : CustomView_webtoonRoundN
@@ -21,11 +13,16 @@ class EpisodeActivity : AppCompatActivity() {
 
         // 초기화
         init()
+        giveWebtoonCuts()
     }
 
     private fun init(){
         roundN = CustomView_webtoonRoundN(this);
         setContentView(roundN)
+    }
+
+    private fun giveWebtoonCuts(){
+        roundN.renewRV("https://cdn.pixabay.com/photo/2019/05/22/22/03/sky-4222653_960_720.jpg")
     }
 
     override fun onBackPressed() {
