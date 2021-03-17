@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.util.Log
+import android.view.GestureDetector
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -24,6 +25,10 @@ class CustomView_webtoonRoundN : LinearLayout {
     lateinit var mInitBitmap : Bitmap
 
     var cutList : ArrayList<webtoonCuts> = arrayListOf()
+
+    var IsItZoomIn = false
+    val mMinZoom = 1.0f
+    val mMaxZoom = 2.0f
 
     constructor(context: Context?) : super(context){
         // 초기화
@@ -61,7 +66,37 @@ class CustomView_webtoonRoundN : LinearLayout {
             // specify an viewAdapter (see also next example)
             adapter = rvAdapter
 
-            setOnTouchListener(object : OnTouchListener{
+            setOnTouchListener(object : GestureDetector.OnDoubleTapListener, OnTouchListener {
+                override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onDoubleTap(e: MotionEvent?): Boolean {
+                    when(e?.action){
+                        MotionEvent.ACTION_DOWN -> {
+                            if(IsItZoomIn){
+                                IsItZoomIn = false
+
+                                this@CustomView_webtoonRoundN.scaleX = mMinZoom
+                                this@CustomView_webtoonRoundN.scaleY = mMinZoom
+
+                                Log.d("더블클릭 이벤트", "$IsItZoomIn")
+                            }else{
+                                IsItZoomIn = true
+
+                                this@CustomView_webtoonRoundN.scaleX = mMaxZoom
+                                this@CustomView_webtoonRoundN.scaleY = mMaxZoom
+                            }
+                        }
+                    }
+
+                    return true
+                }
+
+                override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
+                    TODO("Not yet implemented")
+                }
+
                 override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                     when(event?.action){
                         MotionEvent.ACTION_DOWN -> {
