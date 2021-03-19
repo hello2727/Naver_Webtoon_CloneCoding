@@ -2,8 +2,13 @@ package com.example.android.webtoon.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.example.android.webtoon.R
+import org.jetbrains.anko.doAsync
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
 
 class EpisodeActivity : AppCompatActivity() {
     val URL : String = "https://comic.naver.com"
@@ -18,8 +23,9 @@ class EpisodeActivity : AppCompatActivity() {
 
         // 초기화
         init()
-        // 에피소드 정보 가져오기
+        // 에피소드 회차 링크 가져오기
         getEpisodeInfo()
+        // 웹툰뷰어에 에피소드 회차 사진 목록 넘겨주기
         giveWebtoonCuts()
     }
 
@@ -38,7 +44,19 @@ class EpisodeActivity : AppCompatActivity() {
     }
 
     private fun giveWebtoonCuts(){
-        roundN.renewRV("https://cdn.pixabay.com/photo/2019/05/22/22/03/sky-4222653_960_720.jpg")
+        doAsync {
+            val document = Jsoup.connect(URL+link).get()
+
+            var cuts : Elements = document.select("div.wt_viewer img")
+            for(img in cuts){
+                var cut = img.attr("src")
+
+                var handler = Handler(Looper.getMainLooper())
+                handler.postDelayed({
+                    roundN.renewRV(cut)
+                }, 0)
+            }
+        }
     }
 
     override fun onBackPressed() {

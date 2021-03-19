@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.example.android.webtoon.R
 import com.example.android.webtoon.model.remote.webtoonCuts
 
@@ -39,8 +41,10 @@ class EpisodeAdapter(val context: Context?, val episodeUnit: ArrayList<webtoonCu
         val iv_content = itemView.findViewById<ImageView>(R.id.iv_content)
 
         fun bind (list: webtoonCuts, context: Context) {
+            var glideUrl = GlideUrl(list.iv_cut, LazyHeaders.Builder().addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit / 537.36(KHTML, like Gecko) Chrome  47.0.2526.106 Safari / 537.36").build())
+
             Glide.with(context)
-                .load(list.iv_cut)
+                .load(glideUrl)
                 .into(iv_content)
 
             /* 아이템 클릭시 동작 */

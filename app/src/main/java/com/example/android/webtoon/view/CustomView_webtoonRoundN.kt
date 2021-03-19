@@ -66,47 +66,47 @@ class CustomView_webtoonRoundN : LinearLayout {
             // specify an viewAdapter (see also next example)
             adapter = rvAdapter
 
-            setOnTouchListener(object : GestureDetector.OnDoubleTapListener, OnTouchListener {
-                override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onDoubleTap(e: MotionEvent?): Boolean {
-                    when(e?.action){
-                        MotionEvent.ACTION_DOWN -> {
-                            if(IsItZoomIn){
-                                IsItZoomIn = false
-
-                                this@CustomView_webtoonRoundN.scaleX = mMinZoom
-                                this@CustomView_webtoonRoundN.scaleY = mMinZoom
-
-                                Log.d("더블클릭 이벤트", "$IsItZoomIn")
-                            }else{
-                                IsItZoomIn = true
-
-                                this@CustomView_webtoonRoundN.scaleX = mMaxZoom
-                                this@CustomView_webtoonRoundN.scaleY = mMaxZoom
-                            }
-                        }
-                    }
-
-                    return true
-                }
-
-                override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                    when(event?.action){
-                        MotionEvent.ACTION_DOWN -> {
-                            Log.d("누르기", "success")
-                        }
-                    }
-
-                    return true
-                }
-            })
+//            setOnTouchListener(object : GestureDetector.OnDoubleTapListener, OnTouchListener {
+//                override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+//                    TODO("Not yet implemented")
+//                }
+//
+//                override fun onDoubleTap(e: MotionEvent?): Boolean {
+//                    when(e?.action){
+//                        MotionEvent.ACTION_DOWN -> {
+//                            if(IsItZoomIn){
+//                                IsItZoomIn = false
+//
+//                                this@CustomView_webtoonRoundN.scaleX = mMinZoom
+//                                this@CustomView_webtoonRoundN.scaleY = mMinZoom
+//
+//                                Log.d("더블클릭 이벤트", "$IsItZoomIn")
+//                            }else{
+//                                IsItZoomIn = true
+//
+//                                this@CustomView_webtoonRoundN.scaleX = mMaxZoom
+//                                this@CustomView_webtoonRoundN.scaleY = mMaxZoom
+//                            }
+//                        }
+//                    }
+//
+//                    return true
+//                }
+//
+//                override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
+//                    TODO("Not yet implemented")
+//                }
+//
+//                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+//                    when(event?.action){
+//                        MotionEvent.ACTION_DOWN -> {
+//                            Log.d("누르기", "success")
+//                        }
+//                    }
+//
+//                    return true
+//                }
+//            })
         }
     }
 
