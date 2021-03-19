@@ -17,7 +17,7 @@ import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 
 class deepWebtoonActivity : AppCompatActivity() {
-    var URL : String = "https://comic.naver.com"
+    val URL : String = "https://comic.naver.com"
 
     private lateinit var rv_listOfEpisode : RecyclerView
     private lateinit var rvManager: RecyclerView.LayoutManager
@@ -62,14 +62,14 @@ class deepWebtoonActivity : AppCompatActivity() {
                     var title = episode.select("td.title a").text()
                     var rating = episode.select("div.rating_type strong").text()
                     var updateDay = episode.select("td.num").text()
+                    var link = episode.select("td a").attr("href")
 
-                    Log.d("에피소드 정보", "$img $title $rating $updateDay")
-                    if(deepwebtoonList.contains(EpisodeList(img, title, rating, updateDay))){
+                    if(deepwebtoonList.contains(EpisodeList(img, title, rating, updateDay, link))){
                         theEnd = true
                         break
                     }
 
-                    deepwebtoonList.add(EpisodeList(img, title, rating, updateDay))
+                    deepwebtoonList.add(EpisodeList(img, title, rating, updateDay, link))
 
                     val handler = Handler(Looper.getMainLooper())
                     handler.postDelayed({
@@ -88,6 +88,7 @@ class deepWebtoonActivity : AppCompatActivity() {
     private fun setEpisodesOfTheWebtoon(){
         val rvAdapter = deepWebtoonAdapter(this, deepwebtoonList) { ListItem ->
             val intent = Intent(this, EpisodeActivity::class.java)
+            intent.putExtra("episodeContent", ListItem.tv_link)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
@@ -111,6 +112,7 @@ class deepWebtoonActivity : AppCompatActivity() {
     private fun setRenewEpisodesOfTheWebtoon(){
         val rvAdapter = deepWebtoonAdapter(applicationContext, deepwebtoonList){ListItem ->
             val intent = Intent(this, EpisodeActivity::class.java)
+            intent.putExtra("episodeContent", ListItem.tv_link)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
