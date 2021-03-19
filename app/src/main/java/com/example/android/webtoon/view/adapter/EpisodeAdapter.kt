@@ -41,10 +41,12 @@ class EpisodeAdapter(val context: Context?, val episodeUnit: ArrayList<webtoonCu
         val iv_content = itemView.findViewById<ImageView>(R.id.iv_content)
 
         fun bind (list: webtoonCuts, context: Context) {
+            // httpException 에러 해결코드
             var glideUrl = GlideUrl(list.iv_cut, LazyHeaders.Builder().addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit / 537.36(KHTML, like Gecko) Chrome  47.0.2526.106 Safari / 537.36").build())
 
             Glide.with(context)
                 .load(glideUrl)
+                .placeholder(R.drawable.empty)
                 .into(iv_content)
 
             /* 아이템 클릭시 동작 */
