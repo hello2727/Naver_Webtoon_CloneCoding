@@ -48,6 +48,8 @@ class CustomView_webtoonRoundN : LinearLayout {
 
         // 웹툰컷 리스트화하기
         setRV()
+        // 터치이벤트 설정
+//        setTouchEvent()
     }
 
     private fun setRV(){
@@ -65,49 +67,41 @@ class CustomView_webtoonRoundN : LinearLayout {
 
             // specify an viewAdapter (see also next example)
             adapter = rvAdapter
-
-//            setOnTouchListener(object : GestureDetector.OnDoubleTapListener, OnTouchListener {
-//                override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-//                    TODO("Not yet implemented")
-//                }
-//
-//                override fun onDoubleTap(e: MotionEvent?): Boolean {
-//                    when(e?.action){
-//                        MotionEvent.ACTION_DOWN -> {
-//                            if(IsItZoomIn){
-//                                IsItZoomIn = false
-//
-//                                this@CustomView_webtoonRoundN.scaleX = mMinZoom
-//                                this@CustomView_webtoonRoundN.scaleY = mMinZoom
-//
-//                                Log.d("더블클릭 이벤트", "$IsItZoomIn")
-//                            }else{
-//                                IsItZoomIn = true
-//
-//                                this@CustomView_webtoonRoundN.scaleX = mMaxZoom
-//                                this@CustomView_webtoonRoundN.scaleY = mMaxZoom
-//                            }
-//                        }
-//                    }
-//
-//                    return true
-//                }
-//
-//                override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
-//                    TODO("Not yet implemented")
-//                }
-//
-//                override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-//                    when(event?.action){
-//                        MotionEvent.ACTION_DOWN -> {
-//                            Log.d("누르기", "success")
-//                        }
-//                    }
-//
-//                    return true
-//                }
-//            })
         }
+    }
+
+    private fun setTouchEvent(){
+        linear_touchView.setOnTouchListener(object  : GestureDetector.OnGestureListener, OnTouchListener {
+            override fun onDown(e: MotionEvent?): Boolean {
+
+                return true
+            }
+
+            override fun onShowPress(e: MotionEvent?) {
+                return
+            }
+
+            override fun onSingleTapUp(e: MotionEvent?): Boolean {
+                return true
+            }
+
+            override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+                return true
+            }
+
+            override fun onLongPress(e: MotionEvent?) {
+
+                return
+            }
+
+            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+                return true
+            }
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+               return true
+            }
+        })
     }
 
     fun renewRV(imgPath : String){

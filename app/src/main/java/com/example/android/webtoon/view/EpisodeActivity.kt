@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import com.example.android.webtoon.R
 import org.jetbrains.anko.doAsync
 import org.jsoup.Jsoup
