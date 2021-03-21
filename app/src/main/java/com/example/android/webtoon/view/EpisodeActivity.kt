@@ -53,10 +53,13 @@ class EpisodeActivity : AppCompatActivity() {
             for(img in cuts){
                 var cut = img.attr("src")
 
-                var handler = Handler(Looper.getMainLooper())
-                handler.postDelayed({
-                    roundN.renewRV(cut)
-                }, 0)
+                // 이미지 소스 커스텀뷰에 넘기기
+                roundN.setCuts(cut)
+                roundN.invalidate()
+//                var handler = Handler(Looper.getMainLooper())
+//                handler.postDelayed({
+//                    roundN.renewRV(cut)
+//                }, 0)
             }
         }
     }

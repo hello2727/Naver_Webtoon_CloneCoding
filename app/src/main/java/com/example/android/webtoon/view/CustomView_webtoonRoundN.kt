@@ -44,12 +44,15 @@ class CustomView_webtoonRoundN : LinearLayout {
     }
 
     private fun init(context: Context?) {
-        LayoutInflater.from(context).inflate(R.layout.item_layout_cutlist, this, true)
+//        LayoutInflater.from(context).inflate(R.layout.item_layout_cutlist, this, true)
 
         // 웹툰컷 리스트화하기
-        setRV()
-        // 터치이벤트 설정
-//        setTouchEvent()
+//        setRV()
+    }
+
+    fun setCuts(imgPath : String){
+        Log.d("이미지소스 가져오기", "$imgPath")
+        cutList.add(webtoonCuts(imgPath))
     }
 
     private fun setRV(){
@@ -68,40 +71,6 @@ class CustomView_webtoonRoundN : LinearLayout {
             // specify an viewAdapter (see also next example)
             adapter = rvAdapter
         }
-    }
-
-    private fun setTouchEvent(){
-        linear_touchView.setOnTouchListener(object  : GestureDetector.OnGestureListener, OnTouchListener {
-            override fun onDown(e: MotionEvent?): Boolean {
-
-                return true
-            }
-
-            override fun onShowPress(e: MotionEvent?) {
-                return
-            }
-
-            override fun onSingleTapUp(e: MotionEvent?): Boolean {
-                return true
-            }
-
-            override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-                return true
-            }
-
-            override fun onLongPress(e: MotionEvent?) {
-
-                return
-            }
-
-            override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
-                return true
-            }
-
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-               return true
-            }
-        })
     }
 
     fun renewRV(imgPath : String){
@@ -126,8 +95,21 @@ class CustomView_webtoonRoundN : LinearLayout {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        if(mInitBitmap != null){
-            canvas?.drawBitmap(mInitBitmap, 0f, 0f, null)
+//        if(mInitBitmap != null){
+//            canvas?.drawBitmap(mInitBitmap, 0f, 0f, null)
+//        }
+
+        if(!cutList.isEmpty()){
+            var x = 0f
+            var y = 0f
+
+            for(cut in cutList){
+                var bitmap : Bitmap = BitmapFactory.decodeFile(cut.iv_cut);
+                canvas?.drawBitmap(bitmap, x, y, null)
+                bitmap.recycle()
+
+                x = bitmap.height.toFloat()
+            }
         }
     }
 }
