@@ -2,27 +2,25 @@ package com.example.android.webtoon.view
 
 import android.content.Context
 import android.graphics.*
+import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
-import android.view.GestureDetector
-import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.android.webtoon.R
 import com.example.android.webtoon.model.remote.webtoonCuts
 import com.example.android.webtoon.view.adapter.EpisodeAdapter
 import kotlinx.android.synthetic.main.item_layout_cutlist.view.*
-import org.jetbrains.anko.doAsync
+import java.io.IOException
+import java.net.MalformedURLException
 import java.net.URL
 
-class CustomView_webtoonRoundN : LinearLayout {
+class CustomView_webtoonRoundN : View {
     lateinit var rvManager: RecyclerView.LayoutManager
 
     lateinit var mCanvas : Canvas
-    lateinit var mInitBitmap : Bitmap
+//    lateinit var mInitBitmap : Bitmap
 
     var cutList : ArrayList<webtoonCuts> = arrayListOf()
 
@@ -48,10 +46,11 @@ class CustomView_webtoonRoundN : LinearLayout {
 
         // 웹툰컷 리스트화하기
 //        setRV()
+
+
     }
 
     fun setCuts(imgPath : String){
-        Log.d("이미지소스 가져오기", "$imgPath")
         cutList.add(webtoonCuts(imgPath))
     }
 
@@ -85,31 +84,47 @@ class CustomView_webtoonRoundN : LinearLayout {
     }
 
     //뷰에 사이즈가 정해졌을 때 만들어지는 함수(메모리에 비트맵 객체 하나 만들어줌)
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-
-        mInitBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        mCanvas = Canvas()
-    }
+//    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+//        super.onSizeChanged(w, h, oldw, oldh)
+//
+//        mInitBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+//        mCanvas = Canvas()
+//        mCanvas.setBitmap(mInitBitmap)
+//    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-//        if(mInitBitmap != null){
-//            canvas?.drawBitmap(mInitBitmap, 0f, 0f, null)
-//        }
-
         if(!cutList.isEmpty()){
+            Log.d("배열 상태", "컷툰 리스트 들어있음")
             var x = 0f
             var y = 0f
 
             for(cut in cutList){
-                var bitmap : Bitmap = BitmapFactory.decodeFile(cut.iv_cut);
-                canvas?.drawBitmap(bitmap, x, y, null)
-                bitmap.recycle()
+                Log.d("이미지소스 가져오기", "${cut.iv_cut} ${cutList.size}")
+                try{
+                    var imgPath = cut.iv_cut
 
-                x = bitmap.height.toFloat()
+                    var handler = Handler(Looper.getMainLooper())
+                    handler.postDelayed({
+                        var url = URL(imgPath)
+//                        var bitmap : Bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                    canvas?.drawBitmap(bitmap, x, y, null)
+//                    bitmap.recycle()
+                    }, 0)
+                }catch (e : IOException){
+                    e.printStackTrace()
+                }catch (e : MalformedURLException){
+                    e.printStackTrace()
+                }
+//
+//                x = bitmap.height.toFloat()
             }
+        }else{
+            Log.d("배열 상태", "컷툰 리스트 없음")
+//            if(mInitBitmap != null){
+//                canvas?.drawBitmap(mInitBitmap, 0f, 0f, null)
+//            }
         }
     }
 }
