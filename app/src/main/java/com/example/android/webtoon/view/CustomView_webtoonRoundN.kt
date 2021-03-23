@@ -9,9 +9,12 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.example.android.webtoon.model.remote.webtoonCuts
 import com.example.android.webtoon.view.adapter.EpisodeAdapter
 import kotlinx.android.synthetic.main.item_layout_cutlist.view.*
+import org.jetbrains.anko.doAsync
 import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
@@ -102,21 +105,15 @@ class CustomView_webtoonRoundN : View {
 
             for(cut in cutList){
                 Log.d("이미지소스 가져오기", "${cut.iv_cut} ${cutList.size}")
-                try{
-                    var imgPath = cut.iv_cut
+                var imgPath = cut.iv_cut
 
-                    var handler = Handler(Looper.getMainLooper())
-                    handler.postDelayed({
-                        var url = URL(imgPath)
-//                        var bitmap : Bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                //var glideUrl = GlideUrl(imgPath, LazyHeaders.Builder().addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit / 537.36(KHTML, like Gecko) Chrome  47.0.2526.106 Safari / 537.36").build())
+                var url = URL(imgPath)
+                doAsync {
+                    var bitmap : Bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                }
 //                    canvas?.drawBitmap(bitmap, x, y, null)
 //                    bitmap.recycle()
-                    }, 0)
-                }catch (e : IOException){
-                    e.printStackTrace()
-                }catch (e : MalformedURLException){
-                    e.printStackTrace()
-                }
 //
 //                x = bitmap.height.toFloat()
             }
