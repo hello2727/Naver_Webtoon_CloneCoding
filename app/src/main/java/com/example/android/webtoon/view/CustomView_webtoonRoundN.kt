@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.item_layout_cutlist.view.*
 import org.jetbrains.anko.doAsync
 import java.io.IOException
 import java.net.MalformedURLException
+import java.net.SocketTimeoutException
 import java.net.URL
 
 class CustomView_webtoonRoundN : View {
@@ -110,7 +111,17 @@ class CustomView_webtoonRoundN : View {
                 //var glideUrl = GlideUrl(imgPath, LazyHeaders.Builder().addHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit / 537.36(KHTML, like Gecko) Chrome  47.0.2526.106 Safari / 537.36").build())
                 var url = URL(imgPath)
                 doAsync {
-                    var bitmap : Bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    try{
+                        var bitmap : Bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    }catch (e : MalformedURLException){
+                        e.printStackTrace()
+                    }catch (e : SocketTimeoutException){
+                        e.printStackTrace()
+                    }catch (e : IOException){
+                        e.printStackTrace()
+                    }catch (e : Exception){
+                        e.printStackTrace()
+                    }
                 }
 //                    canvas?.drawBitmap(bitmap, x, y, null)
 //                    bitmap.recycle()
